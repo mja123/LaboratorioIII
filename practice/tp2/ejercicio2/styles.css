@@ -1,0 +1,80 @@
+.teal {
+    color: teal;
+}
+
+.red {
+    color: red;
+}
+
+.blue {
+    color: blue;
+}
+
+.green {
+    color: green;
+}
+
+.yellow {
+    color: yellow;
+}
+
+.orange {
+    color: orange;
+}
+
+.purple {
+    color: purple;
+}
+
+.pink {
+    color: pink;
+}
+
+.brown {
+    color: brown;
+}
+
+.black {
+    color: black;
+}
+
+.white {
+    color: white;
+}
+
+.gray {
+    color: gray;
+}
+
+.light-gray {
+    color: light-gray;
+}
+
+.dark-gray {
+    color: dark-gray;
+}
+
+.light-blue {
+    color: light-blue;
+}
+
+.light-green {
+    color: light-green;
+}
+
+.olive {
+    color: olive;
+}
+
+.green {
+    color: green;
+}
+
+.magenta {
+    color: magenta;
+}
+
+table, th, td {
+    border: .5px solid black;
+    border-collapse: collapse;
+}

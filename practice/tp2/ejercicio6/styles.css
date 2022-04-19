@@ -1,0 +1,15 @@
+#panel {
+    border: 0.5em solid transparent;
+    background-color: lightgray;
+    padding: 5px;
+    overflow: hidden;
+}
+
+#left {
+    float: left;
+}
+
+#right {
+    float: right;
+}
+
