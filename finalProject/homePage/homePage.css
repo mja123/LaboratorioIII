@@ -1,0 +1,35 @@
+.barNav li{
+    display: inline;
+}
+#menu {
+    float: right;
+    margin-right: 5%;
+}
+#search {
+    float: left
+}
+
+h1 {
+    text-align: center;
+    font-family: 'Voga', sans-serif;
+    padding: 3%;        
+}
+
+.promoList {
+    display: block;
+}
+
+.promoList #promo1 {
+    float: right;
+}
+.promoList #promo2 {
+    float: left;
+}
+
+.promoList #promo3 {
+    float: right;
+}
+
+.promoList #promo4 {
+    float: left;
+}
