@@ -1,6 +1,6 @@
 <?php
     if (($_POST['userName'] == "admin") && ($_POST['password'] == "admin")) {
-        echo "Bienvenido ", $_POST['userName']; 
+        header("Location: http://localhost/finalProject/homePage/homePage.html");
     } else {
         echo "Credenciales inválidas"; 
     }
