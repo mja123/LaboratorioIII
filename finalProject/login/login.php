@@ -1,7 +1,7 @@
 <?php
-    if (($_POST['username'] == "admin") && ($_POST['password'] == "admin")) {
-        echo "<p Bienvenido ", $_POST['username'], "p>"; 
+    if (($_POST['userName'] == "admin") && ($_POST['password'] == "admin")) {
+        echo "Bienvenido ", $_POST['userName']; 
     } else {
-        echo "<p Credenciales inválidas p>"; 
+        echo "Credenciales inválidas"; 
     }
 ?>
