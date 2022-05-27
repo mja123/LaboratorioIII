@@ -15,22 +15,36 @@ const fromObjectToArray = (object) => {
 
 //Exercise 2
 
-function changeBodyBackgroundColor() {
+const changeBodyBackgroundColor = document.getElementById("changeColorButton");
+
+changeBodyBackgroundColor.addEventListener('click', () => {
+
   let color = document.getElementById("changeColor").value;
 
   if (color == "#0f0" || color == "#00ff00" || color == "green") {
     console.log(false);
   } else {
-    const body = document.getElementsByTagName("body");
-    body.style.color = color;
+    document.body.style.backgroundColor = color;
+    console.log(true);
   }
-};
+}) 
 
-// Crear una función cambiarColorDeFondoDelBody. Que reciba como
-// parámetro un String (nombre del color ó valor hexadecimal) y que
-// cambie el color de fondo de la etiqueta <body>. El cambio sólo deberá
-// realizarse, si el valor pasado como parámetro es diferente a green ó
-// #0f0 ó #00ff00. Si el cambio de color es posible, la función retornará
-// true. De lo contrario retornará false.
-// . Ejecutar la función y pasarle como parámetros diferentes valores.
-// a. Mostrar en consola si el cambio de color fue posible.
+//Ejercicio 3
+
+const changeParagraphs = document.getElementById("paragraphsButton");
+
+changeParagraphs.addEventListener("click", () => {
+
+  let paragraphs = document.querySelectorAll(".exercise3 p");
+  let counter = 1;
+  for (let i = 0; i < paragraphs.length; i++) {
+    if (i % 2 == 0) {
+      paragraphs[i].style.color = "red";
+      paragraphs[i].style.fontWeight = "bold";
+      paragraphs[i].style.textAlign = "center";
+      counter++;
+    }
+  }
+  console.log(paragraphs.length - counter);
+});
+
