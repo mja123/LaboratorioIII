@@ -18,7 +18,13 @@
     <!-- Header -->
     <nav class="navbar navbar-expand-lg bg-dark">
       <section class="container">
-        <form class="d-flex" id="searchForm" role="search" action="./../menu/menu.html" method="POST">
+        <form
+          class="d-flex"
+          id="searchForm"
+          role="search"
+          action="./../menu/menu.html"
+          method="POST"
+        >
           <input
             class="form-control me-2"
             type="search"
@@ -40,34 +46,34 @@
 
     <!-- /Header -->
 
+    <!-- TODO: add js validations and parse the inputs in a json to send that to the models -->
     <h1 class="text">REST</h1>
 
     <section class="container">
-      <h3 class="text">PROMOCIONES</h3>
-      <ul class="promotions">
-        <div class="row text-center">
-          <li class="col">
-            <img src="./../images/promo1.png" alt="Burger" />
-          </li>
-          <li class="col">
-            <img src="./../images/promo2.png" alt="Burger" />
-          </li>
-        </div>
-        <div class="row text-center">
-          <li class="col">
-            <img src="./../images/promo3.png" alt="Burger" />
-          </li>
-          <li class="col">
-            <img src="./../images/promo4.png" alt="Burger" />
-          </li>
-        </div>
-      </ul>
+      <h3 class="text">FILTRAR</h3>
+      <!-- onsubmit="return dataValidate"  -->
+      <form class="filter" id="filterForm" action="./HomePageView.php" method="POST">
+        <br />
+        <label for="price">Precio mínimo</label> <br />
+        <input type="number" id="price" name="price" /> <br />
+        <br />
+        <input type="radio" id="starter" name="type" value="starter" />
+        <label for="starter">Entrada</label><br />
+        <input type="radio" id="mainCourse" name="type" value="main_course" />
+        <label for="mainCourse">Plato principal</label><br />
+        <input type="radio" id="dessert" name="type" value="dessert" />
+        <label for="dessert">Postre</label> <br />
+        <input type="radio" id="sale" name="type" value="sale" />
+        <label for="sale">Oferta</label> <br />
+        <input type="checkbox" id="vegetarian" name="vegetarian" />
+        <label for="vegetarian">Vegetariano</label> <br />
+
+        <button type="submit">Ingresar</button>
+      </form>
     </section>
 
     <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-      crossorigin="anonymous"
+    src="./homePage.js"
     ></script>
   </body>
 </html>
