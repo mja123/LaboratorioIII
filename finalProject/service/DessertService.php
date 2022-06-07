@@ -13,7 +13,7 @@ class DessertService implements IService {
     function setPrice(int $price) {
         $this->price = $price;
     }
-    public function getFoodByPrice() {}
+    public function getFoodByPrice($price) {}
     public function getVegetarianFood() {}
     public function getAllByType() {}
 }

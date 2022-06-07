@@ -15,7 +15,7 @@ class SaleService implements IService {
         $this->price = $price;
     }
 
-    public function getFoodByPrice() {}
+    public function getFoodByPrice($price) {}
     public function getVegetarianFood() {}
     public function getAllByType() {}
 }

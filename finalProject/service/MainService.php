@@ -22,11 +22,7 @@ class MainService {
 
     function serviceFactory() {
         $dataArray = json_decode($this->data, true);
-        $price;
-
-        if (!array_key_exists("price", $dataArray)) {            
-            $price = 0;
-        }
+        $price = 0;
 
         if (array_key_exists("type", $dataArray)) {
                 
@@ -40,15 +36,16 @@ class MainService {
                     break;
                 case "main_course":
                     $this->service = new MainCourseService($dataArray["vegetarian"]);
-                    if ($price != 0) {
+                    if ($price != 0) {                    
                         $this->service->setPrice($dataArray["price"]);
                     }
                     break;
                 case "starter":
                     $this->service = new StarterService($dataArray["vegetarian"]);
-                    if ($price != 0) {
-                        $this->service->setPrice($dataArray["price"]);
+                    if (array_key_exists("price", $dataArray)) {                    
+                        $this->service->getFoodByPrice($dataArray["price"]);
                     }
+                    
                     break;
                 case "dessert":
                     $this->service = new DessertService($dataArray["vegetarian"]);
@@ -57,9 +54,7 @@ class MainService {
                     }
                     break;
             }             
-        } else {
-            echo "no";
-        }        
+        }       
     }
 }
 ?>

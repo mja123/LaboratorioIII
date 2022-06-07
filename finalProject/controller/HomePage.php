@@ -1,7 +1,9 @@
 <?php
 
-//require_once("./exceptions/OutRangePriceException.php");
+require_once("controller/exceptions/OutRangePriceException.php");
 require_once('service/MainService.php');
+require_once("service/exceptions/ProductsNotFound.php");
+
 
 class HomePage {
     private string $type;
@@ -29,7 +31,7 @@ class HomePage {
                                 $this->dataObject->price = $value;
                                 break;
                             }
-                            throw new Exception("Invalid price");
+                            throw new OutRangePriceException("Invalid price");
                         }
                         break;
                     case "type":                                        
@@ -41,8 +43,12 @@ class HomePage {
                 }                           
             }                        
             $this->jsonData = json_encode($this->dataObject);
-            echo $this->jsonData;
-            $this->service->setData($this->jsonData);
+            try {
+                
+                return $this->service->setData($this->jsonData);                
+            } catch(ProductsNotFound $e) {
+                echo $e->getMessage();
+            }
         }
 
     }   
