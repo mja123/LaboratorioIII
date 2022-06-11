@@ -46,13 +46,13 @@
 
     <!-- /Header -->
 
-    <!-- TODO: add js validations and parse the inputs in a json to send that to the models -->
+    <!-- TODO: find the way to show the db results in html from js -->
     <h1 class="text">REST</h1>
 
     <section class="container">
       <h3 class="text">FILTRAR</h3>
-      <!-- onsubmit="return dataValidate"  -->
-      <form class="filter" id="filterForm" action="./HomePageView.php" method="POST">
+  
+      <form class="filter" id="filterForm"  onsubmit="return priceValidate()" action="./HomePageView.php" method="POST">
         <br />
         <label for="price">Precio máximo</label> <br />
         <input type="number" id="price" name="price" /> <br />
@@ -62,13 +62,11 @@
         <input type="radio" id="mainCourse" name="type" value="main_course" />
         <label for="mainCourse">Plato principal</label><br />
         <input type="radio" id="dessert" name="type" value="dessert" />
-        <label for="dessert">Postre</label> <br />
-        <input type="radio" id="sale" name="type" value="sale" />
-        <label for="sale">Oferta</label> <br /> <br>
+        <label for="dessert">Postre</label> <br /> <br>
         <input type="checkbox" id="vegetarian" name="vegetarian" />
         <label for="vegetarian">Vegetariano</label> <br />
 
-        <button type="submit">Ingresar</button>
+        <button type="submit" onclick="">Ingresar</button>
       </form>
     </section>
 

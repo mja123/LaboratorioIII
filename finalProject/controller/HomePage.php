@@ -27,7 +27,7 @@ class HomePage {
                 switch ($key) {
                     case "price":
                         if ($value != null) {
-                            if (($value > 0) && ($value < 1000000)) {                    
+                            if (($value >= 0) && ($value < 1000000)) {                    
                                 $this->dataObject->price = $value;
                                 break;
                             }
@@ -45,12 +45,12 @@ class HomePage {
             $this->jsonData = json_encode($this->dataObject);
             try {
                 
-                return $this->service->setData($this->jsonData);                
+                $answer = $this->service->setData($this->jsonData);  
+                $this->filter->resultDataForm($answer);                         
             } catch(ProductsNotFound $e) {
                 echo $e->getMessage();
             }
         }
-
     }   
     
     public function getFilter() {

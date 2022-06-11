@@ -1,7 +1,7 @@
 <?php
 
 interface IFilter {
-    public function setDataForm(Exception $e);
+    public function resultDataForm($e);
     public function getDataForm();
 }
 ?>
