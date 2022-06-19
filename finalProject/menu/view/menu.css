@@ -1,0 +1,19 @@
+h1 {
+    text-align: center;
+    padding: 1%;
+}
+
+li {
+    list-style-type: none;
+}
+
+section .row li {
+    font-style: oblique;
+    font-size: 3vh;
+    font: bold;
+    color: black;
+}
+
+section .row .description {
+padding-left: 4vh;
+}

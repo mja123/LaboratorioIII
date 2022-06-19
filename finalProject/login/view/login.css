@@ -1,0 +1,47 @@
+body {
+    background-image: url("./../../view/images/backgroundLogin.jpg");
+    background-repeat: no-repeat;
+    object-fit: cover;
+    background-attachment: fixed;  
+    background-size: cover;
+}
+h1 {
+    margin-top: 13vh;
+    margin-left: 1vh;
+    margin-right: 135vh;
+    text-align: left;
+    background-color: black;
+    color: white;
+    
+} 
+h1>span {
+    background-color: black;
+}
+form { 
+    font-size: large;
+}
+
+.form {
+    margin-top: 2vh;
+    margin-left: 0;
+    margin-bottom: 1vh;
+    text-align: left;
+    font-size: 3vh;
+    font-style: oblique;
+    color: white;
+    background-color: black;
+}
+
+button {
+    margin-left: 6%;
+    margin-top: 2vh;
+    font-style: oblique;
+    font: bold;
+    color: white;
+    background-color: black;
+    border: 0.5vh solid black;
+}
+
+button:hover {
+    background-color: grey;
+}

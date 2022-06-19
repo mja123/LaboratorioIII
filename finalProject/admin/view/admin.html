@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administrador</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <section class="d-flex justify-content-center form">
+      <form action="" method="POST">
+        <br />
+        <label class="form-control" for="name">Escribe el plato </label> <br />
+        <input type="text" class="form-control" id="name" name="name" /> <br />
+        <button
+          type="button"
+          id="createButton"
+          class="btn btn-primary btn-lg"
+        >
+          Crear
+        </button>
+        <button
+          type="button"
+          id="readButton"
+          class="btn btn-primary btn-lg"
+        >
+          Leer
+        </button>
+        <button
+          type="button"
+          id="deleteButton"
+          class="btn btn-primary btn-lg"
+        >
+          Eliminiar
+        </button>
+      </form>
+    </section>
+
+    <script src="./admin.js"></script>
+  </body>
+</html>
