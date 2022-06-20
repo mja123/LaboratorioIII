@@ -1,3 +1,23 @@
+window.addEventListener("load", async (event) => {
+  event.preventDefault();
+  try {
+    let request = await fetch("http://localhost/finalProject/admin/controller/Validate.php", {
+      method: "GET",
+    });
+    let answer = await request.json();
+    console.log(answer)
+    
+
+    if (answer["error"] != undefined) {
+      throw new Error(answer["error"]);
+    }
+
+  } catch (e) {
+    window.location.replace("http://localhost/finalProject/login/view/login.html");
+  }
+})
+  
+
 const createEvent = document.getElementById("createButton");
 createEvent.addEventListener("click", () => {
   alert("create");

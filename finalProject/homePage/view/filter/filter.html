@@ -5,16 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="filter.css" />
   </head>
   <body>
-	
-	<h1>Platos</h1>
-	
-	<main>
-		<div class="list" id="list"></div>
-		<div class="pagenumbers" id="pagination"></div>
-	</main>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg bg-dark">
+      <section class="container">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link navBarItem" id="menu" href="./../homePage.html">Inicio</a>
+          </li>
+        </ul>
+      </section>
+    </nav>
+
+    <!-- /Header -->
+    <h1>Platos</h1>
+    <main>
+      <div class="list" id="list"></div>
+      <div class="pagenumbers" id="pagination"></div>
+    </main>
     <script src="./filter.js"></script>
   </body>
 </html>

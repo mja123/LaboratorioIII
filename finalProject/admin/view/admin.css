@@ -5,6 +5,14 @@ body {
     background-attachment: fixed;  
     background-size: cover;
 }
+.navBarItem {
+    color: white; 
+ }
+ 
+ .navBarItem:hover {
+     background-color: grey;
+     color: white;
+ }
 
 label {
     background-color: gray;

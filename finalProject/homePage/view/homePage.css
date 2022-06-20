@@ -15,23 +15,15 @@ body {
     
 }
 
-#menu a {
+.navBarItem {
    color: white; 
 }
 
-#menu:hover a{
+.navBarItem:hover {
     background-color: grey;
     color: white;
 }
 
-#searchButton {
-    color: white; 
-}
-
-#searchButton:hover {
-    background-color: grey;
-    color: white;
-}
 
 h1 {
     text-align: center;

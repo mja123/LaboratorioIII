@@ -18,17 +18,16 @@
     <h1><span> Bienvenido Administrador </span></h1>
 
     <section class="container">
-      <form action="./../login.php" method="POST" onsubmit="return checkData()">
+      <form  method="POST" id="login">
         <br />
         <label class="form" for="userName">Nombre</label> <br />
         <input type="text" id="userName" name="userName" /> <br />
         <label class="form" for="password">Contraseña</label> <br />
         <input type="password" id="password" name="password" /> <br />
-        <button type="submit" onclick="sendData()">Ingresar</button>
+        <button type="submit">Ingresar</button>
       </form>
     </section>
     
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src = "login.js">
     </script>
   </body>

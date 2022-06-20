@@ -81,40 +81,4 @@ const fillFormData = () => {
     data.append("vegetarian", 0)
   }
   return data;
-
 }
-
-// const showResults = (data) => {
-//   const result = document.getElementById("result");
-  
-//   const pPrice = document.createElement("p");
-//   const pDescription = document.createElement("p");
-//   const pName = document.createElement("p");
-  
-//   const countOfElements = Object.keys(data).length;
-//   const lengthOfPage = 4;
-//   const countOfPages = Math.ceil(countOfElements / lengthOfPage);
-//   data = JSON.parse(data);
-
-//   console.log(data[0]["name"], data[0]["description"], data[0]["price"])
-  
-//   if (countOfPages > 1) {
-//     for(let i = 0; i < lengthOfPage; i++) {
-//       let name = data[i]["name"]
-//       let description = data[i]["description"];
-//       let price = data[i]["price"]
-//       pName.innerHTML += name;
-//       pDescription.innerHTML += description;
-//       pPrice.innerHTML += price;
-
-//       result.appendChild(pName);
-//       result.appendChild(pDescription);
-//       result.appendChild(pPrice);
-//       result.appendChild(document.createElement("br"));
-//     }
-
-//   }
-//   pData.style.color = "white";
-// };
-
-

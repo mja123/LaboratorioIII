@@ -1,8 +1,50 @@
-const checkData = () => {
+const login = document.getElementById("login");
+
+login.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
   let userName = document.getElementById("userName").value;
   let password = document.getElementById("password").value;
 
-  if (userName != null && password != null) {
+  if (checkData(userName, password)) {
+    try {
+      let data = new FormData();
+      data.append("userName", userName);
+      data.append("password", password);
+
+      let request = await fetch(
+        "http://localhost/finalProject/login/Login.php",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      let answer = await request.json();
+
+      if (answer["error"] != undefined) {
+        throw new Error(answer["error"]);
+      }
+      window.location.replace(
+        "http://localhost/finalProject/admin/view/admin.html"
+      );
+    } catch (e) {
+      let errorAnswer;
+      if (!document.body.contains(document.getElementById("errorRequest"))) {
+        errorAnswer = document.createElement("p");
+        errorAnswer.setAttribute("id", "errorRequest");
+        errorAnswer.setAttribute("class", "container");
+      } else {
+        errorAnswer = document.getElementById("errorRequest");
+      }
+      errorAnswer.innerHTML = "Admin no encontrado.";
+      errorAnswer.style.color = "white";
+      document.body.append(errorAnswer);
+    }
+  }
+});
+
+const checkData = (userName, password) => {
+  if (userName.length > 0 && password.length > 0) {
     return true;
   }
   if (!document.body.contains(document.getElementById("wrapper"))) {
@@ -20,20 +62,4 @@ const checkData = () => {
   }
 
   return false;
-};
-
-
-const errorMessage = (e) => {
-  console.log("sdffffff");
-  let spanWrapper = document.createElement("span");
-  let error = document.createElement("p");
-
-  spanWrapper.setAttribute("id", "error");
-  document.body.append(spanWrapper);
-
-  error.setAttribute("id", "emptyData");
-  error.setAttribute("class", "form");
-  error.innerHTML = e;
-
-  spanWrapper.append(error);
 };

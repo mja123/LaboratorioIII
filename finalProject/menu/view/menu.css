@@ -1,19 +1,37 @@
+body {
+  background-image: url("./../../view/images/pexels-matheus-natan-3394939.jpg");
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-attachment: fixed;
+  background-size: cover;
+  color: white;
+}
+
+.navBarItem {
+  color: white; 
+}
+
+.navBarItem:hover {
+   background-color: grey;
+   color: white;
+}
+
 h1 {
-    text-align: center;
-    padding: 1%;
+  text-align: center;
 }
 
-li {
-    list-style-type: none;
+h5 {
+  text-decoration: wavy;
 }
 
-section .row li {
-    font-style: oblique;
-    font-size: 3vh;
-    font: bold;
-    color: black;
+.price {
+  text-align: center;
+}
+.description {
+  padding-left: 3%;
 }
 
-section .row .description {
-padding-left: 4vh;
+h2 {
+  padding-top: 2%;
+  padding-bottom: 2%;
 }
