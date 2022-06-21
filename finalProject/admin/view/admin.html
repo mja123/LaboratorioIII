@@ -19,13 +19,19 @@
       <section class="container">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link navBarItem" id="menu" href="./../../homePage/view/homePage.html"
-              >Inicio</a
+            <a
+              class="nav-link navBarItem"
+              id="menu"
+              href="./../../menu/view/menu.html"
+              >Menú</a
             >
           </li>
         </ul>
         <div class="d-flex justify-content-end">
-          <a class="nav-link navBarItem" id="menu" href="./../../login/LogOut.php"
+          <a
+            class="nav-link navBarItem"
+            id="menu"
+            href="./../../login/LogOut.php"
             >Cerrar sesión</a
           >
         </div>
@@ -33,11 +39,51 @@
     </nav>
 
     <!-- /Header -->
-    <section class="d-flex justify-content-center form">
-      <form action="" method="POST">
+    <section class="d-flex justify-content-center form" id="wrapper">
+      <form method="POST">
         <br />
-        
-        <input type="text" class="form-control" id="name" name="name" placeholder="Escribe el plato" /> <br />
+
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          placeholder="Escribe el plato"
+        />
+        <br />
+        <input
+          type="text"
+          class="form-control"
+          id="table"
+          name="type"
+          placeholder="Escribe el tipo de plato"
+        />
+        <br />
+        <input
+          type="number"
+          class="form-control"
+          id="price"
+          name="price"
+          placeholder="Escribe el precio (crear)"
+        />
+        <br />
+        <input
+          type="text"
+          class="form-control"
+          id="description"
+          name="description"
+          placeholder="Escribe la descripción (crear)"
+        />
+        <br />
+        <input
+          type="text"
+          class="form-control"
+          id="vegetarian"
+          name="vegetarian"
+          placeholder="¿Vegetariano? (crear)"
+        /> <br>
+
+
         <button type="button" id="createButton" class="btn btn-primary btn-lg">
           Crear
         </button>

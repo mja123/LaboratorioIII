@@ -3,8 +3,6 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
   });
 
 
-
-
 let list_items = JSON.parse(params.data);
 console.log(list_items)
 
