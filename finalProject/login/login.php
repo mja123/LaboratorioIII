@@ -7,9 +7,9 @@ class Login {
 
         $userName = $_POST['userName'];
         $password = md5($_POST['password']);
-
+        
         $connection = DbConnection::getInstance()->getConnection();  
-
+        
         $query = $connection->prepare("SELECT name, password FROM admins WHERE name = :name AND password = :password;");
         $query->bindParam(":name", $userName);
         $query->bindParam(":password", $password);
@@ -34,12 +34,15 @@ class Login {
   
 }
 $login = new Login();
-try {
+$answer;
 
+try {
     $answer = $login->compareData();
-    echo json_encode($answer);
 } catch(Exception $e) {
     $answer = array("error" => $e);
+} finally {
+    header('Access-Control-Allow-Origin: *');
+    header('Content-type: application/json');
     echo json_encode($answer);
 }
 

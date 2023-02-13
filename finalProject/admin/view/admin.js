@@ -2,7 +2,12 @@ window.addEventListener("load", async (event) => {
   event.preventDefault();
   try {
     let request = await fetch(
-      "http://localhost/finalProject/admin/controller/Validate.php",
+      "http://localhost/finalProject/admin/controller/Validate.php", {
+        "mode": "no-cors",
+        "headers": {
+            "Access-Control-Allow-Origin": "*"
+        }
+      },
       {
         method: "GET",
       }
@@ -38,7 +43,12 @@ createEvent.addEventListener("click", async (event) => {
     data.append("action", "create");
     try {
     const request = await fetch(
-      "http://localhost/finalProject/admin/controller/Admin.php",
+      "http://localhost/finalProject/admin/controller/Admin.php", {
+        "mode": "no-cors",
+        "headers": {
+            "Access-Control-Allow-Origin": "*"
+        }
+      },
       {
         method: "POST",
         body: data,
@@ -81,7 +91,12 @@ readEvent.addEventListener("click", async (event) => {
     data.append("action", "read");
     try {
       const request = await fetch(
-        "http://localhost/finalProject/admin/controller/Admin.php",
+        "http://localhost/finalProject/admin/controller/Admin.php", {
+          "mode": "no-cors",
+          "headers": {
+              "Access-Control-Allow-Origin": "*"
+          }
+        },
         {
           method: "POST",
           body: data,
@@ -122,7 +137,12 @@ deleteEvent.addEventListener("click", async (event) => {
       data.append("table", input.table);
       data.append("action", "remove");
       const request = await fetch(
-        "http://localhost/finalProject/admin/controller/Admin.php",
+        "http://localhost/finalProject/admin/controller/Admin.php", {
+          "mode": "no-cors",
+          "headers": {
+            "Access-Control-Allow-Origin": "*"
+          }
+        },
         {
           method: "POST",
           body: data,

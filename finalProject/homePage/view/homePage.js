@@ -33,7 +33,12 @@ form.addEventListener("submit", async (event) => {
   try {
     
     let request = await fetch(
-      "http://localhost/finalProject/homePage/controller/HomePage.php",
+      "http://localhost/finalProject/homePage/controller/HomePage.php",//, {
+        //"mode": "cors",
+        //"headers": {
+        //    "Access-Control-Allow-Origin": "*"
+        //}
+      //},
       {
         method: "POST",
         body: data,

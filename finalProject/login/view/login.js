@@ -11,24 +11,31 @@ login.addEventListener("submit", async (event) => {
       let data = new FormData();
       data.append("userName", userName);
       data.append("password", password);
-
+      
       let request = await fetch(
-        "http://localhost/finalProject/login/Login.php",
-        {
+        "http://localhost/finalProject/login/Login.php", {
+          headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-type": "application/json"
+          },
+          mode: "no-cors",
           method: "POST",
-          body: data,
+          body: JSON.stringify(data)
         }
       );
+      console.log(request)
       let answer = await request.json();
 
       if (answer["error"] != undefined) {
         throw new Error(answer["error"]);
       }
+      
       window.location.replace(
         "http://localhost/finalProject/admin/view/admin.html"
       );
     } catch (e) {
       let errorAnswer;
+      console.log(e)
       if (!document.body.contains(document.getElementById("errorRequest"))) {
         errorAnswer = document.createElement("p");
         errorAnswer.setAttribute("id", "errorRequest");
