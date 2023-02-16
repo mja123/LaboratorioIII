@@ -1,6 +1,6 @@
 <?php
 
-require_once("admin/service/AdminService.php");
+require_once(dirname(__FILE__)."/../service/AdminService.php");
 
 class Admin {
     private $service;
@@ -11,32 +11,36 @@ class Admin {
     public function serviceFactory() {
         $this->service = new AdminService();
         $answer;
+            $data = file_get_contents('php://input', true);
+            $json = json_decode($data, true);
 
-        switch($_POST['action']) {
+        // switch($_POST['action']) {
+        switch($json['action']) {
             case "create":                 
-                $table = $_POST["table"];
-                $name = $_POST["name"];
-                $price = $_POST["price"];
-                $vegetarian = $_POST["vegetarian"];
-                $description = $_POST["description"];
+                $table = $json["table"];
+                $name = $json["name"];
+                $price = $json["price"];
+                $vegetarian = $json["vegetarian"];
+                $description = $json["description"];
                 $answer = $this->service->createDish($table, $name, $price, $description, $vegetarian);
                 break;
                 
             case "remove":
                
-                $table = $_POST["table"];
-                $name = $_POST["name"];
+                $table = $json["table"];
+                $name = $json["name"];
                 $answer =  $this->service->deleteDish($table, $name);
                 break;
                 
             case "read":
-                $table = $_POST["table"];
-                $name = $_POST["name"];
+                $table = $json["table"];
+                $name = $json["name"];
                 $answer =  $this->service->getDish($table, $name);
                 break;
             
         }
-        header('Content-Type: application/json; charset=utf-8');
+        header('Content-type: application/json');
+        header('Access-Control-Allow-Origin: *');  
         echo json_encode($answer);
     }
 }
