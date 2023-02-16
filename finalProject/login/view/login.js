@@ -8,23 +8,21 @@ login.addEventListener("submit", async (event) => {
 
   if (checkData(userName, password)) {
     try {
-      let data = new FormData();
-      data.append("userName", userName);
-      data.append("password", password);
-      
+      let data = {
+        "username": userName,
+        "password": password
+      }
+
       let request = await fetch(
         "http://localhost/finalProject/login/Login.php", {
-          headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Content-type": "application/json"
-          },
-          mode: "no-cors",
           method: "POST",
           body: JSON.stringify(data)
         }
       );
+
       console.log(request)
-      let answer = await request.json();
+      let answer = await request.json()
+      console.log(JSON.stringify(answer) + " asdfasd")
 
       if (answer["error"] != undefined) {
         throw new Error(answer["error"]);
@@ -33,6 +31,7 @@ login.addEventListener("submit", async (event) => {
       window.location.replace(
         "http://localhost/finalProject/admin/view/admin.html"
       );
+
     } catch (e) {
       let errorAnswer;
       console.log(e)

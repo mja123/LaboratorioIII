@@ -1,7 +1,7 @@
 <?php
-require_once("homePage/service/interfaces/IService.php");
-require_once("DbConnection.php");
-require_once("exceptions/ProductsNotFound.php");
+require_once(dirname(__FILE__)."/interfaces/IService.php");
+require_once("./../../DbConnection.php");
+require_once("./../../exceptions/ProductsNotFound.php");
 
 class StarterService implements IService {
     private $connection;
@@ -56,7 +56,7 @@ class StarterService implements IService {
 
 
         if ($queryAnswer) {
-
+            
             return json_encode($queryAnswer);
         
         } else {
@@ -74,7 +74,7 @@ class StarterService implements IService {
 
 
         if ($queryAnswer) {
-
+            
             return json_encode($queryAnswer);
         
         } else {
@@ -82,4 +82,8 @@ class StarterService implements IService {
         }
     }
 }
+
+$starter = new StarterService();
+$starter->getVegetarianFood();
+
 ?>

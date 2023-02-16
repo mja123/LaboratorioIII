@@ -1,8 +1,8 @@
 <?php
 
-require_once("exceptions/OutRangePriceException.php");
-require_once('homePage/service/MainService.php');
-require_once("exceptions/ProductsNotFound.php");
+require_once("./../../exceptions/OutRangePriceException.php");
+require_once('./../service/MainService.php');
+require_once("./../../exceptions/ProductsNotFound.php");
 
 
 class HomePage {
@@ -45,18 +45,19 @@ class HomePage {
                 }                           
             }                        
             $this->jsonData = json_encode($this->dataObject);
+
             try {
-                
-                header('Content-Type: application/json; charset=utf-8');
+
                 $answer = $this->service->setData($this->jsonData); 
+                header('HTTP/1.1 200');
 
-
-                echo json_encode($answer);                  
-            
-                
             } catch(ProductsNotFound $e) {
                 header("HTTP/1.1 404 Not Found");
                 $answer = array('error' => $e->getMessage());
+            
+            } finally {
+                header('Content-type: application/json');
+                header('Access-Control-Allow-Origin: *'); 
                 echo json_encode($answer);
             }
         }

@@ -1,5 +1,5 @@
 <?php
-require_once("DbConnection.php");
+require_once("./../../DbConnection.php");
 
 class AdminService {
     private $connection;
@@ -32,8 +32,11 @@ class AdminService {
             
             $queryAnswer = $query->fetchAll(PDO::FETCH_ASSOC);        
                 
+            header('Content-type: application/json');
+            header('Access-Control-Allow-Origin: *');  
+
             if ($queryAnswer) {
-            
+                header('HTTP/1.1 200');
                 return $queryAnswer;
             
             }
@@ -41,7 +44,7 @@ class AdminService {
             throw new Exception("No se ha encontrado el plato.");
             
         } catch(Exception $e) {
-    
+            header('HTTP/1.1 400');
             return array("error" => $e->getMessage());            
         }
         
@@ -69,14 +72,18 @@ class AdminService {
    
             $query->execute();
 
-            if ($query->rowCount() > 0) {
+            header('Content-type: application/json');
+            header('Access-Control-Allow-Origin: *');  
 
+            if ($query->rowCount() > 0) {
+                header('HTTP/1.1 200');
                 return array("success", true);
             }
             
             throw new Exception("No se ha encontrado el plato en la tabla seleccionada.");
             
         } catch(Exception $e) {
+            header('HTTP/1.1 400');
             return array("error" => $e->getMessage());
         }
     }
@@ -108,14 +115,17 @@ class AdminService {
             
    
             $queryAnswer = $query->execute();
-            
-            if ($queryAnswer) {
 
+            header('Content-type: application/json');
+            header('Access-Control-Allow-Origin: *');  
+            if ($queryAnswer) {
+                header('HTTP/1.1 201');
                 return array("success", true);
             }
             
             throw new Exception("No se ha encontrado el plato en la tabla seleccionada.");
         } catch(Exception $e) {
+            header('HTTP/1.1 400');
             return array("error" => $e->getMessage());
         }
     }

@@ -3,17 +3,10 @@ window.addEventListener("load", async (event) => {
   try {
     let request = await fetch(
       "http://localhost/finalProject/admin/controller/Validate.php", {
-        "mode": "no-cors",
-        "headers": {
-            "Access-Control-Allow-Origin": "*"
-        }
-      },
-      {
         method: "GET",
       }
     );
     let answer = await request.json();
-    console.log(answer);
 
     if (answer["error"] != undefined) {
       throw new Error(answer["error"]);
@@ -34,26 +27,25 @@ createEvent.addEventListener("click", async (event) => {
   let input = validateInput("create");
 
   if (input != null) {
-    const data = new FormData();
-    data.append("table", input.table);
-    data.append("name", input.name);
-    data.append("description", input.description);
-    data.append("vegetarian", input.vegetarian);
-    data.append("price", input.price);
-    data.append("action", "create");
+    const data = {
+      "name": input.name,
+      "table": input.table,
+      "description": input.description,
+      "vegetarian": input.vegetarian,
+      "price": input.price,
+      "action": "create"
+    }
+
     try {
     const request = await fetch(
-      "http://localhost/finalProject/admin/controller/Admin.php", {
-        "mode": "no-cors",
-        "headers": {
-            "Access-Control-Allow-Origin": "*"
-        }
-      },
+      "http://localhost/finalProject/admin/controller/Admin.php",
       {
         method: "POST",
-        body: data,
+        // body: data,
+        body: JSON.stringify(data),
       }
     );
+    console.log(request)
     let body = await request.json();
     console.log(body);
     if (body["error"] != undefined) {
@@ -85,21 +77,16 @@ readEvent.addEventListener("click", async (event) => {
   let input = validateInput("read");
 
   if (input != null) {
-    const data = new FormData();
-    data.append("table", input.table);
-    data.append("name", input.name);
-    data.append("action", "read");
+    const data = {
+      "name": input.name,
+      "table": input.table,
+      "action": "read"
+    }
     try {
       const request = await fetch(
         "http://localhost/finalProject/admin/controller/Admin.php", {
-          "mode": "no-cors",
-          "headers": {
-              "Access-Control-Allow-Origin": "*"
-          }
-        },
-        {
           method: "POST",
-          body: data,
+          body: JSON.stringify(data),
         }
       );
       let body = await request.json();
@@ -132,20 +119,16 @@ deleteEvent.addEventListener("click", async (event) => {
 
   if (input != null) {
     try {
-      let data = new FormData();
-      data.append("name", input.name);
-      data.append("table", input.table);
-      data.append("action", "remove");
+      const data = {
+        "name": input.name,
+        "table": input.table,
+        "action": "remove"
+      }
+      
       const request = await fetch(
         "http://localhost/finalProject/admin/controller/Admin.php", {
-          "mode": "no-cors",
-          "headers": {
-            "Access-Control-Allow-Origin": "*"
-          }
-        },
-        {
           method: "POST",
-          body: data,
+          body: JSON.stringify(data),
         }
       );
 
@@ -187,7 +170,7 @@ const validateInput = (action) => {
     if (
       price > 0 &&
       description.length > 0 &&
-      (vegetarian == "si" || vegetarian == "no")
+      (vegetarian == 1 || vegetarian == 0)
     ) {
       return {
         name: dish,

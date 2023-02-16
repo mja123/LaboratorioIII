@@ -1,7 +1,7 @@
 <?php
-require_once("homePage/service/interfaces/IService.php");
-require_once("DbConnection.php");
-require_once("exceptions/ProductsNotFound.php");
+require_once(dirname(__FILE__)."/interfaces/IService.php");
+require_once("./../../DbConnection.php");
+require_once("./../../exceptions/ProductsNotFound.php");
 
 class GeneralService implements IService {
     private $connection;

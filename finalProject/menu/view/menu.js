@@ -1,12 +1,7 @@
 window.addEventListener("load", async (event) => {
   event.preventDefault();
   try {
-    let request = await fetch("http://localhost/finalProject/menu/Menu.php", {
-      mode: "no-cors",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-type": "application/json"
-      },
+    let request = await fetch("http://localhost/finalProject/menu/menu.php", {
       method: "GET",
     });
     let answer = await request.json();

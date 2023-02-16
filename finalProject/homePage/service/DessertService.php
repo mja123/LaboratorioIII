@@ -1,7 +1,7 @@
 <?php
-require_once("homePage/service/interfaces/IService.php");
-require_once("DbConnection.php");
-require_once("exceptions/ProductsNotFound.php");
+require_once(dirname(__FILE__)."/interfaces/IService.php");
+require_once("./../../DbConnection.php");
+require_once("./../../exceptions/ProductsNotFound.php");
 
 
 class DessertService implements IService {
@@ -72,10 +72,9 @@ class DessertService implements IService {
         $query->execute();
 
         $queryAnswer = $query->fetchAll(PDO::FETCH_ASSOC);        
-
-
+   
         if ($queryAnswer) {
-
+            
             return json_encode($queryAnswer);
         
         } else {

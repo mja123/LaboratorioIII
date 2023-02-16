@@ -1,10 +1,10 @@
 <?php
 
-require_once("homePage/service/interfaces/IService.php");
-require_once("homePage/service/MainCourseService.php");
-require_once("homePage/service/StarterService.php");
-require_once("homePage/service/DessertService.php");
-require_once("homePage/service/GeneralService.php");
+require_once(dirname(__FILE__)."/interfaces/IService.php");
+require_once(dirname(__FILE__)."./MainCourseService.php");
+require_once(dirname(__FILE__)."./StarterService.php");
+require_once(dirname(__FILE__)."./DessertService.php");
+require_once(dirname(__FILE__)."./GeneralService.php");
 
 class MainService {
     private IService $service;
