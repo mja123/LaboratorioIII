@@ -17,12 +17,8 @@ class Admin {
         // switch($_POST['action']) {
         switch($json['action']) {
             case "create":                 
-                $table = $json["table"];
-                $name = $json["name"];
-                $price = $json["price"];
-                $vegetarian = $json["vegetarian"];
-                $description = $json["description"];
-                $answer = $this->service->createDish($table, $name, $price, $description, $vegetarian);
+                
+                $answer = $this->service->createDish($json);
                 break;                
                 
             case "read":
@@ -33,8 +29,9 @@ class Admin {
 
             case "update":
         
-                $changes = updateData($json);
-                $answer =  $this->service->updateDish($changes);
+                // $changes = updateData($json);
+                // $answer =  $this->service->updateDish($changes);
+                $answer =  $this->service->updateDish($json);
                 break;
 
             default:
