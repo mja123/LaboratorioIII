@@ -14,7 +14,6 @@ class Admin {
             $data = file_get_contents('php://input', true);
             $json = json_decode($data, true);
 
-        // switch($_POST['action']) {
         switch($json['action']) {
             case "create":                 
                 
@@ -28,9 +27,7 @@ class Admin {
                 break;
 
             case "update":
-        
-                // $changes = updateData($json);
-                // $answer =  $this->service->updateDish($changes);
+
                 $answer =  $this->service->updateDish($json);
                 break;
 
@@ -41,20 +38,7 @@ class Admin {
                 $answer =  $this->service->deleteDish($table, $name);
                 break;
         }
-        header('Content-type: application/json');
-        header('Access-Control-Allow-Origin: *');  
         echo json_encode($answer);
-    }
-
-    private function updateData($json): array {
-        $data = array();
-
-        foreach ($json as $key => $value) {
-    
-            array_push($data, $key, $value);
-        }
-        return $data;
-
     }
 }
 

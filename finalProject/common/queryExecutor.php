@@ -1,6 +1,6 @@
 <?php
 
-function executeQuery($query, $get = false, $error = "No se ha encontrado el plato en la tabla seleccionada.") {
+function executeQuery($query, $method = "post", $error = "No se ha encontrado el plato en la tabla seleccionada.") {
     try {    
 
         $queryAnswer = $query->execute();
@@ -8,15 +8,33 @@ function executeQuery($query, $get = false, $error = "No se ha encontrado el pla
         header('Content-type: application/json');
         header('Access-Control-Allow-Origin: *'); 
         
-        if ($get) {
-            $queryAnswer = $query->fetchAll(PDO::FETCH_ASSOC);  
+        switch($method) {
+            case "get":
+                $queryAnswer = $query->fetchAll(PDO::FETCH_ASSOC);           
+                if ($queryAnswer) {
+                    return $queryAnswer;
+                }
+                break;
+            case "delete":
+                if ($query->rowCount() > 0) {
+                    header('HTTP/1.1 200');
+                    return array("success", true);
+                }
+                break;
+            case "update":
+                if ($query->rowCount() > 0) {
+                    header('HTTP/1.1 200');
+                    return array("success", true);
+                }
+                break;
+            
+            default:
+                if ($queryAnswer) {
+                    header('HTTP/1.1 200');
+                        return array("success", true);
+                }
         }
 
-        if ($queryAnswer) {
-            header('HTTP/1.1 201');
-            return array("success", true);
-        }
-        
         throw new Exception($error);
     } catch(Exception $e) {
         header('HTTP/1.1 400');

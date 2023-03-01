@@ -41,7 +41,6 @@ createEvent.addEventListener("click", async (event) => {
       "http://localhost/finalProject/admin/controller/Admin.php",
       {
         method: "POST",
-        // body: data,
         body: JSON.stringify(data),
       }
     );
@@ -52,7 +51,7 @@ createEvent.addEventListener("click", async (event) => {
       throw new Error(body["error"]);
     }
 
-    showMessage("credo");
+    showMessage("creado");
 
     } catch (e) {
     if (!document.body.contains(document.getElementById("errorRequest"))) {
@@ -89,6 +88,7 @@ readEvent.addEventListener("click", async (event) => {
           body: JSON.stringify(data),
         }
       );
+      console.log(request)
       let body = await request.json();
       if (body["error"] != undefined) {
         throw new Error(body["error"]);
@@ -131,7 +131,7 @@ deleteEvent.addEventListener("click", async (event) => {
           body: JSON.stringify(data),
         }
       );
-
+      console.log(request)
       let body = await request.json();
 
       if (body["error"] != undefined) {
@@ -230,11 +230,15 @@ const showDish = (data) => {
   section.setAttribute("id", "getMessage")
   wrapper.append(section);
 
-  console.log(data)
   name.innerHTML = `Nombre: ${data[0]["name"]}`;
   description.innerHTML = `Descipción: ${data[0]["description"]}`;
   price.innerHTML = `Precio: $${data[0]["price"]}`;
-  vegetarian.innerHTML = `Vegetariano: ${data[0]["vegetarian"]}`;
+  if (data[0]["vegetarian"] == "1") {
+    vegetarian.innerHTML = `Vegetariano`;
+  } else {
+    vegetarian.innerHTML = `No vegetariano`;
+  }
+  
 
   name.style.color = "white"; 
   description.style.color = "white"; 

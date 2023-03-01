@@ -22,7 +22,6 @@ login.addEventListener("submit", async (event) => {
 
       console.log(request)
       let answer = await request.json()
-      console.log(JSON.stringify(answer) + " asdfasd")
 
       if (answer["error"] != undefined) {
         throw new Error(answer["error"]);

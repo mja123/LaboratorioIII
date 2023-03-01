@@ -14,8 +14,7 @@ class DbConnection {
         ); 
 
         try{
-            // $this->connection = new PDO(getenv("URL"), getenv("USER"), getenv("PASSWORD"), $this->options);         
-            $this->connection = new PDO("mysql:host=localhost;port=3306;dbname=rest", "root", "", $this->options);
+            $this->connection = new PDO(getenv("URL"), getenv("USER"), getenv("PASSWORD"), $this->options);         
         } catch(PDOException $e) {
             echo "Problemas al conectar la base de datos: $e"; 
         }

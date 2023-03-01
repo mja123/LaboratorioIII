@@ -22,11 +22,10 @@ class Login {
         $queryAnswer = $query->fetchAll(PDO::FETCH_ASSOC);
         
         if ($queryAnswer) {
-            return $this->initSession($userName); 
-            
-        } else {
-            throw new Exception("Administrador/a no encontrado/a.");
+            return $this->initSession($userName);             
         }
+
+        throw new Exception("Administrador/a no encontrado/a.");
     }
 
     public function initSession($userName) {
@@ -42,11 +41,11 @@ $answer = null;
 
 try {
     $answer = $login->compareData();
-    header('HTTP/1.1 200');
+    // header('HTTP/1.1 200');
     
 } catch(Exception $e) {
     $answer = array('error' => $e->getMessage());
-    header('HTTP/1.1 404');
+    // header('HTTP/1.1 404');
     
 } finally {
     header('Content-type: application/json');

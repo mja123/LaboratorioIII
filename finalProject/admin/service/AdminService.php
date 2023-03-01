@@ -10,22 +10,20 @@ class AdminService {
 
     public function getDish($table, $name) {
         
-        $query = $this->connection->prepare("SELECT * FROM `:table` WHERE `name`=:name;");
+        $query = $this->connection->prepare("SELECT * FROM $table WHERE `name` = :name;");
                 
-        $query->bindParam(':table', $table);
         $query->bindParam(':name', $name);
 
-        return executeQuery($query, true);
+        return executeQuery($query, "get");
         
     }
     public function deleteDish($table, $name) {
 
-        $query = $this->connection->prepare("DELETE FROM `:table` WHERE `name`=:name;");
+        $query = $this->connection->prepare("DELETE FROM $table WHERE `name` = :name;");
             
-        $query->bindParam(':table', $table);
         $query->bindParam(':name', $name);
 
-        return $this->executeQuery($query);
+        return executeQuery($query, "delete");
 
     }
 
@@ -34,53 +32,78 @@ class AdminService {
         $query = $this->connection->prepare($this->prepareData($data, "Create"));   
            
         $this->replaceParams($data, $query);
-
+        
         return executeQuery($query);
     }
 
     public function updateDish($changes) {
 
-        $query = $this->connection->prepare($this->prepareData($changes));
+        $query = $this->connection->prepare($this->prepareData($changes, "Update"));
         $this->replaceParams($changes, $query);
 
-        return executeQuery($query);
+        return executeQuery($query, "update");
     }
 
     private function prepareData($changes, $method) {
 
         $columns = "";
         $placeholder = "";
-                
+        $table = $changes["table"];
+        $updates = "";
+        
         foreach ($changes as $key => $value) {
-            if ($key == "name" || $key == "table" || $key == "action") {
+            if ($key == "table" || $key == "action") {
                 continue;
             }
 
-            $columns = $columns . $key . ', ';
-            $placeholder = $placeholder . ":" . $key . ', ';  
+            if ($method == "Update") {
+                if ($key == "name") {
+                    continue;
+                }
+                $updates = $updates . $key . " = " . ":" . $key . ", ";
+            } else {
+                $columns = $columns . $key . ', ';
+                $placeholder = $placeholder . ":" . $key . ', ';  
+            }
         }        
+
+        if ($method == "Update") {
+            $name = $changes["name"];            
+            $updates = trim(substr_replace($updates, '', -2, -1));
+            
+            return "UPDATE $table SET $updates WHERE `name` = :name;";
+        }      
 
         $columns = trim(substr_replace($columns, '' , -2, -1));
         $placeholder = trim(substr_replace($placeholder, '' , -2, -1));
-
-        if ($method == "Update") {
-            return "UPDATE INTO `:table` SET ($columns) VALUES ($placeholder) WHERE name = `:name`;";
-        }      
-
-        return "INSERT INTO `:table` ($columns) VALUES ($placeholder)";
         
+        return "INSERT INTO $table ($columns) VALUES ($placeholder)";
     }
-
+//TODO: FIX NAME AND DESCRIPTION PARAMS (Description value is set as name too)
     private function replaceParams($changes, &$query) {
         foreach ($changes as $key => $value) {          
-            echo "$key \n";
-            if ($key == "price") {
-                $query->bindParam(":$key", $value, PDO::PARAM_INT);    
+            switch($key) {
+                case "action":
+                    break;
+                case "table":
+                    break;
+                case "price":
+                    $price = intval($value);
+                    $query->bindParam(":$key", $price, PDO::PARAM_INT);
+                    break;
+                case "vegetarian":
+                    $vegetarian = 0;
+                    if ($value == "1") {
+                        $vegetarian = 1;
+                    } 
+                    $query->bindParam(":$key", $vegetarian, PDO::PARAM_BOOL);
+                    break;
+                default:
+                    $query->bindParam(":$key", $value);  
+                    break;
+                
             }
-
-            $query->bindParam(":$key", $value);
         }
     }
-
 }
 ?>
