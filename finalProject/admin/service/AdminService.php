@@ -32,7 +32,7 @@ class AdminService {
         $query = $this->connection->prepare($this->prepareData($data, "Create"));   
            
         $this->replaceParams($data, $query);
-        
+      
         return executeQuery($query);
     }
 
@@ -79,7 +79,7 @@ class AdminService {
         
         return "INSERT INTO $table ($columns) VALUES ($placeholder)";
     }
-//TODO: FIX NAME AND DESCRIPTION PARAMS (Description value is set as name too)
+
     private function replaceParams($changes, &$query) {
         foreach ($changes as $key => $value) {          
             switch($key) {
@@ -98,10 +98,13 @@ class AdminService {
                     } 
                     $query->bindParam(":$key", $vegetarian, PDO::PARAM_BOOL);
                     break;
-                default:
-                    $query->bindParam(":$key", $value);  
+                case "name":  
+                    $name = $value;
+                    $query->bindParam(":$key", $name);  
                     break;
-                
+                default:
+                    $query->bindParam(":$key", $value);
+                    break;
             }
         }
     }

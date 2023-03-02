@@ -31,7 +31,7 @@ function executeQuery($query, $method = "post", $error = "No se ha encontrado el
             default:
                 if ($queryAnswer) {
                     header('HTTP/1.1 200');
-                        return array("success", true);
+                    return array("success", true);
                 }
         }
 

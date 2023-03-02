@@ -153,16 +153,78 @@ deleteEvent.addEventListener("click", async (event) => {
   }
 });
 
-const validateInput = (action) => {
-  let dish = document.getElementById("name").value;
-  let table = document.getElementById("table").value;
+const updateEvent = document.getElementById("updateButton");
+updateEvent.addEventListener("click", async (event) => {
+  event.preventDefault();
+ 
+  removeMessages();
+  console.log("here")
+  let input = validateInput("update");
 
-  if (dish.length > 0 && table.length > 0 && action != "create") {
+  if (input != null) {
+    console.log(input)
+    // const data = {
+    //   "name": input.name,
+    //   "table": input.table,
+    //   "description": input.description,
+    //   "vegetarian": input.vegetarian,
+    //   "price": input.price,
+    //   "action": "create"
+    // }
+
+    try {
+    const request = await fetch(
+      "http://localhost/finalProject/admin/controller/Admin.php",
+      {
+        method: "POST",
+        body: JSON.stringify(input),
+      }
+    );
+    console.log(request)
+    let body = await request.json();
+    console.log(body);
+    if (body["error"] != undefined) {
+      throw new Error(body["error"]);
+    }
+
+    showMessage("modificado");
+
+    } catch (e) {
+      if (!document.body.contains(document.getElementById("errorRequest"))) {
+        let errorAnswer = document.createElement("p");
+
+        errorAnswer.setAttribute("id", "errorRequest");
+        errorAnswer.setAttribute("class", "d-flex justify-content-center form");
+        errorAnswer.innerHTML = e;
+        errorAnswer.style.color = "white";
+        document.body.append(errorAnswer);
+      }
+    }
+  }
+});
+
+const validateInput = (action) => {
+  let name = document.getElementById("name").value;
+  let table = document.getElementById("table").value;
+  
+  let input = {}
+  console.log("update")
+  let price = document.getElementById("price").value;
+  // let description = document.getElementById("description").value;
+  // let vegetarian = document.getElementById("vegetarian").value;
+  input.push(price)
+  input.push(name)
+  input.push(table)
+
+  console.log(`data ${input}`)
+  return input
+
+  if (name.length > 0 && table.length > 0 && action != "create") {
     return {
-      name: dish,
+      name,
       table,
     };
-  } else if (dish.length > 0 && table.length > 0 && action == "create") {
+  } else if (name.length > 0 && table.length > 0 && action == "create") {
     let price = document.getElementById("price").value;
     let description = document.getElementById("description").value;
     let vegetarian = document.getElementById("vegetarian").value;
@@ -173,13 +235,13 @@ const validateInput = (action) => {
       (vegetarian == 1 || vegetarian == 0)
     ) {
       return {
-        name: dish,
+        name,
         table,
         price,
         description,
         vegetarian,
       };
-    } else {
+    }
       if (!document.body.contains(document.getElementById("emptyName"))) {
         let errorAnswer = document.createElement("p");
 
@@ -191,7 +253,19 @@ const validateInput = (action) => {
         document.body.append(errorAnswer);
       }
       return null;
-    }
+
+  } else if (name.length > 0 && table.length > 0 && action == "update") {
+    let data = {}
+    console.log("update")
+    let price = document.getElementById("price").value;
+    // let description = document.getElementById("description").value;
+    // let vegetarian = document.getElementById("vegetarian").value;
+    data.push(price)
+    data.push(name)
+    data.push(table)
+
+    console.log(`data ${data}`)
+    return data
   } else {
     if (!document.body.contains(document.getElementById("emptyName"))) {
       let errorAnswer = document.createElement("p");
