@@ -162,15 +162,7 @@ updateEvent.addEventListener("click", async (event) => {
   let input = validateInput("update");
 
   if (input != null) {
-    console.log(input)
-    // const data = {
-    //   "name": input.name,
-    //   "table": input.table,
-    //   "description": input.description,
-    //   "vegetarian": input.vegetarian,
-    //   "price": input.price,
-    //   "action": "create"
-    // }
+    console.log(JSON.stringify(input))
 
     try {
     const request = await fetch(
@@ -203,83 +195,102 @@ updateEvent.addEventListener("click", async (event) => {
   }
 });
 
+//TODO: Refactor this and return an object and use it to send the request to
+//TODO: Create a function that evaluates if the value is greater than zero and modifies data object
 const validateInput = (action) => {
   let name = document.getElementById("name").value;
   let table = document.getElementById("table").value;
-  
-  let input = {}
-  console.log("update")
+  let description = document.getEelementById("description").value 
+  let vegetarian = document.getEelementById("vegetarian").value 
   let price = document.getElementById("price").value;
-  // let description = document.getElementById("description").value;
-  // let vegetarian = document.getElementById("vegetarian").value;
-  input.push(price)
-  input.push(name)
-  input.push(table)
+  
+  
+  if (name.length > 0 && table.length > 0) {
+    return null
+  } 
 
-  console.log(`data ${input}`)
-  return input
+  let data = {}
+  data.name = name
+  data.table = table
 
-  if (name.length > 0 && table.length > 0 && action != "create") {
-    return {
-      name,
-      table,
-    };
-  } else if (name.length > 0 && table.length > 0 && action == "create") {
-    let price = document.getElementById("price").value;
-    let description = document.getElementById("description").value;
-    let vegetarian = document.getElementById("vegetarian").value;
-
-    if (
-      price > 0 &&
-      description.length > 0 &&
-      (vegetarian == 1 || vegetarian == 0)
-    ) {
-      return {
-        name,
-        table,
-        price,
-        description,
-        vegetarian,
-      };
-    }
-      if (!document.body.contains(document.getElementById("emptyName"))) {
-        let errorAnswer = document.createElement("p");
-
-        errorAnswer.setAttribute("id", "emptyName");
-        errorAnswer.setAttribute("class", "d-flex justify-content-center form");
-        errorAnswer.innerHTML =
-          "Debes ingresar correctamente todos los datos...";
-        errorAnswer.style.color = "white";
-        document.body.append(errorAnswer);
+  switch (action) {
+    case "create":
+      if (description.length > 0 && price.length > 0 && vegetarian.length > 0) {
+        data.description = description
+        data.price = price
+        data.vegetarian = vegetarian
       }
-      return null;
-
-  } else if (name.length > 0 && table.length > 0 && action == "update") {
-    let data = {}
-    console.log("update")
-    let price = document.getElementById("price").value;
-    // let description = document.getElementById("description").value;
-    // let vegetarian = document.getElementById("vegetarian").value;
-    data.push(price)
-    data.push(name)
-    data.push(table)
-
-    console.log(`data ${data}`)
-    return data
-  } else {
-    if (!document.body.contains(document.getElementById("emptyName"))) {
-      let errorAnswer = document.createElement("p");
-
-      errorAnswer.setAttribute("id", "emptyName");
-      errorAnswer.setAttribute("class", "d-flex justify-content-center form");
-      errorAnswer.innerHTML =
-        "Debes ingresar el nombre y el tipo de un plato...";
-      errorAnswer.style.color = "white";
-      document.body.append(errorAnswer);
-    }
-    return null;
+    case "update":
+      
+    case "delete":
+    default:
+      break
   }
-};
+
+  return data
+}
+
+//   if (name.length > 0 && table.length > 0 && action == "delete" || action == "read") {
+//     return {
+//       name,
+//       table,
+//     };
+//   } else if (name.length > 0 && table.length > 0 && action == "create") {
+//     if (
+//       price > 0 &&
+//       description.length > 0 &&
+//       (vegetarian == 1 || vegetarian == 0)
+//     ) {
+//       return {
+//         name,
+//         table,
+//         price,
+//         description,
+//         vegetarian,
+//       };
+//     }
+//     //TODO: refactor this code and split to a different response function
+//       if (!document.body.contains(document.getElementById("emptyName"))) {
+//         let errorAnswer = document.createElement("p");
+
+//         errorAnswer.setAttribute("id", "emptyName");
+//         errorAnswer.setAttribute("class", "d-flex justify-content-center form");
+//         errorAnswer.innerHTML =
+//           "Debes ingresar correctamente todos los datos...";
+//         errorAnswer.style.color = "white";
+//         document.body.append(errorAnswer);
+//       }
+//       return null;
+
+//   } else if (name.length > 0 && table.length > 0 && action == "update") {
+//     let input = {}
+  
+//     if (description.length > 0) {
+//       input.description = description
+//     }
+//     if (vegetarian.length > 0) {
+//       input.vegetarian = vegetarian
+//     }
+    
+//     input.price = price
+//     input.name = name
+//     input.table = table
+//     input.action = action
+//     return input
+//   } else {
+//     if (!document.body.contains(document.getElementById("emptyName"))) {
+//       let errorAnswer = document.createElement("p");
+
+//       errorAnswer.setAttribute("id", "emptyName");
+//       errorAnswer.setAttribute("class", "d-flex justify-content-center form");
+//       errorAnswer.innerHTML =
+//         "Debes ingresar el nombre y el tipo de un plato...";
+//       errorAnswer.style.color = "white";
+//       document.body.append(errorAnswer);
+//     }
+//     return null;
+//   }
+// };
 
 const showMessage = (method) => {
   let message = document.createElement("p");
