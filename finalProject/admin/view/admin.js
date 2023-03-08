@@ -200,8 +200,8 @@ updateEvent.addEventListener("click", async (event) => {
 const validateInput = (action) => {
   let name = document.getElementById("name").value;
   let table = document.getElementById("table").value;
-  let description = document.getEelementById("description").value 
-  let vegetarian = document.getEelementById("vegetarian").value 
+  let description = document.getElementById("description").value 
+  let vegetarian = document.getElementById("vegetarian").value 
   let price = document.getElementById("price").value;
   
   
@@ -226,7 +226,7 @@ const validateInput = (action) => {
     default:
       break
   }
-
+  console.log(data)
   return data
 }
 

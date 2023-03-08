@@ -11,8 +11,11 @@ class Admin {
     public function serviceFactory() {
         $this->service = new AdminService();
         $answer;
-            $data = file_get_contents('php://input', true);
-            $json = json_decode($data, true);
+        $data = file_get_contents('php://input', true);
+        $json = json_decode($data, true);
+        // if ($json["image"]) {
+        //     $json["image"] = $_FILES["image"]["name"];
+        // }
 
         switch($json['action']) {
             case "create":                 
