@@ -27,24 +27,16 @@ createEvent.addEventListener("click", async (event) => {
   let input = validateInput("create");
 
   if (input != null) {
-    const data = {
-      "name": input.name,
-      "table": input.table,
-      "description": input.description,
-      "vegetarian": input.vegetarian,
-      "price": input.price,
-      "action": "create"
-    }
 
+    input.action = "create";
     try {
     const request = await fetch(
       "http://localhost/finalProject/admin/controller/Admin.php",
       {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify(input),
       }
     );
-    console.log(request)
     let body = await request.json();
     console.log(body);
     if (body["error"] != undefined) {
@@ -54,15 +46,15 @@ createEvent.addEventListener("click", async (event) => {
     showMessage("creado");
 
     } catch (e) {
-    if (!document.body.contains(document.getElementById("errorRequest"))) {
-      let errorAnswer = document.createElement("p");
+      if (!document.body.contains(document.getElementById("errorRequest"))) {
+        let errorAnswer = document.createElement("p");
 
-      errorAnswer.setAttribute("id", "errorRequest");
-      errorAnswer.setAttribute("class", "d-flex justify-content-center form");
-      errorAnswer.innerHTML = e;
-      errorAnswer.style.color = "white";
-      document.body.append(errorAnswer);
-    }
+        errorAnswer.setAttribute("id", "errorRequest");
+        errorAnswer.setAttribute("class", "d-flex justify-content-center form");
+        errorAnswer.innerHTML = e;
+        errorAnswer.style.color = "white";
+        document.body.append(errorAnswer);
+      }
     }
   }
 });
@@ -76,16 +68,13 @@ readEvent.addEventListener("click", async (event) => {
   let input = validateInput("read");
 
   if (input != null) {
-    const data = {
-      "name": input.name,
-      "table": input.table,
-      "action": "read"
-    }
+    input.action = "read";
+
     try {
       const request = await fetch(
         "http://localhost/finalProject/admin/controller/Admin.php", {
           method: "POST",
-          body: JSON.stringify(data),
+          body: JSON.stringify(input),
         }
       );
       console.log(request)
@@ -119,16 +108,12 @@ deleteEvent.addEventListener("click", async (event) => {
 
   if (input != null) {
     try {
-      const data = {
-        "name": input.name,
-        "table": input.table,
-        "action": "remove"
-      }
+      input.action = "delete";
       
       const request = await fetch(
         "http://localhost/finalProject/admin/controller/Admin.php", {
           method: "POST",
-          body: JSON.stringify(data),
+          body: JSON.stringify(input),
         }
       );
       console.log(request)
@@ -158,11 +143,11 @@ updateEvent.addEventListener("click", async (event) => {
   event.preventDefault();
  
   removeMessages();
-  console.log("here")
+  
   let input = validateInput("update");
 
   if (input != null) {
-    console.log(JSON.stringify(input))
+    input.action = "update";
 
     try {
     const request = await fetch(
@@ -195,17 +180,18 @@ updateEvent.addEventListener("click", async (event) => {
   }
 });
 
-//TODO: Refactor this and return an object and use it to send the request to
-//TODO: Create a function that evaluates if the value is greater than zero and modifies data object
+//TODO: Validate image
 const validateInput = (action) => {
   let name = document.getElementById("name").value;
   let table = document.getElementById("table").value;
   let description = document.getElementById("description").value 
   let vegetarian = document.getElementById("vegetarian").value 
   let price = document.getElementById("price").value;
+  let image = document.getElementById("image").value
   
   
-  if (name.length > 0 && table.length > 0) {
+  if (name.length == 0 || table.length == 0) {
+    errorMessage("Debes ingresar nombre y tabla.")
     return null
   } 
 
@@ -215,82 +201,48 @@ const validateInput = (action) => {
 
   switch (action) {
     case "create":
-      if (description.length > 0 && price.length > 0 && vegetarian.length > 0) {
-        data.description = description
-        data.price = price
-        data.vegetarian = vegetarian
+      if (description.length == 0 || price.length == 0 || vegetarian.length == 0 || image.length == 0) {
+        errorMessage("Debes ingresar todos los datos...")
+        return null
       }
+      data.description = description
+      data.price = price
+      if (validateVegetarian(vegetarian) == null) {
+        return null
+      }
+      data.vegetarian = vegetarian
+      data.image = image
+      break
     case "update":
-      
-    case "delete":
-    default:
+      let changes = 0
+      if (description.length > 0) {
+        data.description = description
+        changes++
+      }
+      if (price.length > 0) {
+        data.price = price
+        changes++
+      }
+      if (vegetarian.length > 0) {
+        if (validateVegetarian(vegetarian) == null) {
+          return null
+        } 
+        data.vegetarian = vegetarian
+        changes++
+      }
+      if (image.length > 0) {
+        data.image = image
+        changes++
+      }
+      if (changes == 0 ) {
+        errorMessage("Debes ingresar al menos un cambio.")
+        return null
+      }
       break
   }
   console.log(data)
   return data
 }
-
-//   if (name.length > 0 && table.length > 0 && action == "delete" || action == "read") {
-//     return {
-//       name,
-//       table,
-//     };
-//   } else if (name.length > 0 && table.length > 0 && action == "create") {
-//     if (
-//       price > 0 &&
-//       description.length > 0 &&
-//       (vegetarian == 1 || vegetarian == 0)
-//     ) {
-//       return {
-//         name,
-//         table,
-//         price,
-//         description,
-//         vegetarian,
-//       };
-//     }
-//     //TODO: refactor this code and split to a different response function
-//       if (!document.body.contains(document.getElementById("emptyName"))) {
-//         let errorAnswer = document.createElement("p");
-
-//         errorAnswer.setAttribute("id", "emptyName");
-//         errorAnswer.setAttribute("class", "d-flex justify-content-center form");
-//         errorAnswer.innerHTML =
-//           "Debes ingresar correctamente todos los datos...";
-//         errorAnswer.style.color = "white";
-//         document.body.append(errorAnswer);
-//       }
-//       return null;
-
-//   } else if (name.length > 0 && table.length > 0 && action == "update") {
-//     let input = {}
-  
-//     if (description.length > 0) {
-//       input.description = description
-//     }
-//     if (vegetarian.length > 0) {
-//       input.vegetarian = vegetarian
-//     }
-    
-//     input.price = price
-//     input.name = name
-//     input.table = table
-//     input.action = action
-//     return input
-//   } else {
-//     if (!document.body.contains(document.getElementById("emptyName"))) {
-//       let errorAnswer = document.createElement("p");
-
-//       errorAnswer.setAttribute("id", "emptyName");
-//       errorAnswer.setAttribute("class", "d-flex justify-content-center form");
-//       errorAnswer.innerHTML =
-//         "Debes ingresar el nombre y el tipo de un plato...";
-//       errorAnswer.style.color = "white";
-//       document.body.append(errorAnswer);
-//     }
-//     return null;
-//   }
-// };
 
 const showMessage = (method) => {
   let message = document.createElement("p");
@@ -358,4 +310,26 @@ const removeMessages = () => {
   if (document.body.contains(document.getElementById("emptyName"))) {
     document.body.removeChild(document.getElementById("emptyName"));
   }
+}
+
+const validateVegetarian = (value) => {
+  value = value.toLowerCase();
+
+  if (value == "1" || value == "true" || value == "yes" || value == "si") {
+    return "1"
+  } else if (value == "0" || value == "false"  || value == "no") {
+    return "0"
+  } else {
+    errorMessage("Debes ingresar 1 o 0.")
+    return null
+  }
+}
+
+const errorMessage = (message) => {
+  let error = document.createElement("p");
+  error.setAttribute("id", "errorRequest");
+  error.setAttribute("class", "d-flex justify-content-center form");
+  error.innerHTML = message;
+  error.style.color = "white";
+  document.body.append(error)
 }
