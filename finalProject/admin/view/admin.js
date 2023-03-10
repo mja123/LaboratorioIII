@@ -27,7 +27,7 @@ createEvent.addEventListener("click", async (event) => {
   let input = validateInput("create");
 
   if (input != null) {
-
+    console.log(input["image"])
     input.action = "create";
     try {
     const request = await fetch(
@@ -82,7 +82,7 @@ readEvent.addEventListener("click", async (event) => {
       if (body["error"] != undefined) {
         throw new Error(body["error"]);
       }
-
+      console.log(body)
       showDish(body);
     } catch (e) {
       if (!document.body.contains(document.getElementById("errorRequest"))) {
@@ -262,6 +262,7 @@ const showDish = (data) => {
   let description = document.createElement("p");
   let price = document.createElement("p");
   let vegetarian = document.createElement("p");
+  let image = document.createElement("img");
 
   section.setAttribute("class", "container");
   section.setAttribute("id", "getMessage")
@@ -275,6 +276,10 @@ const showDish = (data) => {
   } else {
     vegetarian.innerHTML = `No vegetariano`;
   }
+
+  //TODO: Fix image loading, investigate if is possible do it without file system
+  console.log(data[0]["image"])  
+  image.setAttribute("src", "data:image/jpg;base64, " + data[0]["image"])
   
 
   name.style.color = "white"; 
@@ -286,11 +291,13 @@ const showDish = (data) => {
   description.setAttribute("class", "col");
   price.setAttribute("class", "col");
   vegetarian.setAttribute("class", "col");
+  image.setAttribute("class", "col");
 
   section.appendChild(name);
   section.appendChild(description);
   section.appendChild(price);
   section.appendChild(vegetarian);
+  section.appendChild(image)
 };
 
 const removeMessages = () => {

@@ -107,7 +107,8 @@ class AdminService {
                     $query->bindParam(":$key", $image, PDO::PARAM_LOB);  
                     break;
                 default:
-                    $query->bindParam(":$key", $value);
+                    $description = $value;
+                    $query->bindParam(":$key", $description);
                     break;
             }
         }

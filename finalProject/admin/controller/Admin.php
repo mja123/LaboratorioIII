@@ -13,9 +13,6 @@ class Admin {
         $answer;
         $data = file_get_contents('php://input', true);
         $json = json_decode($data, true);
-        // if ($json["image"]) {
-        //     $json["image"] = $_FILES["image"]["name"];
-        // }
 
         switch($json['action']) {
             case "create":                 
@@ -27,6 +24,10 @@ class Admin {
                 $table = $json["table"];
                 $name = $json["name"];
                 $answer =  $this->service->getDish($table, $name);
+
+                if ($answer[0]['image'] != null) {
+                    $answer[0]['image'] = base64_encode($answer[0]['image']);
+                }
                 break;
 
             case "update":
