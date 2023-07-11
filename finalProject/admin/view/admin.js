@@ -24,7 +24,7 @@ createEvent.addEventListener("click", async (event) => {
  
   removeMessages();
 
-  let input = validateInput("create");
+  let input = await validateInput("create");
 
   if (input != null) {
     console.log(input["image"])
@@ -65,7 +65,7 @@ readEvent.addEventListener("click", async (event) => {
 
   removeMessages();
 
-  let input = validateInput("read");
+  let input = await validateInput("read");
 
   if (input != null) {
     input.action = "read";
@@ -82,7 +82,7 @@ readEvent.addEventListener("click", async (event) => {
       if (body["error"] != undefined) {
         throw new Error(body["error"]);
       }
-      console.log(body)
+      console.log("REad method ")
       showDish(body);
     } catch (e) {
       if (!document.body.contains(document.getElementById("errorRequest"))) {
@@ -104,7 +104,7 @@ deleteEvent.addEventListener("click", async (event) => {
 
   removeMessages();
 
-  let input = validateInput("delete");
+  let input = await validateInput("delete");
 
   if (input != null) {
     try {
@@ -144,7 +144,7 @@ updateEvent.addEventListener("click", async (event) => {
  
   removeMessages();
   
-  let input = validateInput("update");
+  let input = await validateInput("update");
 
   if (input != null) {
     input.action = "update";
@@ -180,15 +180,19 @@ updateEvent.addEventListener("click", async (event) => {
   }
 });
 
-//TODO: Validate image
-const validateInput = (action) => {
+const validateInput = async (action) => {
   let name = document.getElementById("name").value;
   let table = document.getElementById("table").value;
   let description = document.getElementById("description").value 
   let vegetarian = document.getElementById("vegetarian").value 
   let price = document.getElementById("price").value;
-  let image = document.getElementById("image").value
-  
+  let image = document.getElementById("image").files[0]
+  let imageData
+  if (image != undefined) {
+    imageData = await readFileDataAsBase64(image);
+  }
+
+  console.log("Image: " + imageData)
   
   if (name.length == 0 || table.length == 0) {
     errorMessage("Debes ingresar nombre y tabla.")
@@ -201,7 +205,7 @@ const validateInput = (action) => {
 
   switch (action) {
     case "create":
-      if (description.length == 0 || price.length == 0 || vegetarian.length == 0 || image.length == 0) {
+      if (description.length == 0 || price.length == 0 || vegetarian.length == 0 || imageData.length == 0) {
         errorMessage("Debes ingresar todos los datos...")
         return null
       }
@@ -211,7 +215,7 @@ const validateInput = (action) => {
         return null
       }
       data.vegetarian = vegetarian
-      data.image = image
+      data.image = imageData
       break
     case "update":
       let changes = 0
@@ -230,8 +234,8 @@ const validateInput = (action) => {
         data.vegetarian = vegetarian
         changes++
       }
-      if (image.length > 0) {
-        data.image = image
+      if (imageData.length > 0) {
+        data.image = imageData
         changes++
       }
       if (changes == 0 ) {
@@ -256,6 +260,7 @@ const showMessage = (method) => {
 
 const showDish = (data) => {
   let wrapper = document.getElementById("wrapper");
+  console.log("Show Dish")
 
   let section = document.createElement("section");
   let name = document.createElement("p");
@@ -277,10 +282,9 @@ const showDish = (data) => {
     vegetarian.innerHTML = `No vegetariano`;
   }
 
-  //TODO: Fix image loading, investigate if is possible do it without file system
-  console.log(data[0]["image"])  
-  image.setAttribute("src", "data:image/jpg;base64, " + data[0]["image"])
-  
+  image.src= data[0]["image"];
+  // image.setAttribute("width", 50)
+  // image.setAttribute("height", 100)
 
   name.style.color = "white"; 
   description.style.color = "white"; 
@@ -291,7 +295,7 @@ const showDish = (data) => {
   description.setAttribute("class", "col");
   price.setAttribute("class", "col");
   vegetarian.setAttribute("class", "col");
-  image.setAttribute("class", "col");
+  image.setAttribute("class", "img-fluid");
 
   section.appendChild(name);
   section.appendChild(description);
@@ -299,6 +303,27 @@ const showDish = (data) => {
   section.appendChild(vegetarian);
   section.appendChild(image)
 };
+
+const readImage = (file) => {
+  
+  const reader = new FileReader();
+  file = atob(file);
+  reader.addEventListener(
+    "load",
+    () => {
+      // convert image file to base64 string
+      preview.src = reader.result;
+    },
+    false
+  );
+
+  console.log("here")
+  if (file) {
+    console.log(reader.readAsDataURL(file))
+    reader.readAsDataURL(file);
+  }
+  
+}
 
 const removeMessages = () => {
 
@@ -340,3 +365,14 @@ const errorMessage = (message) => {
   error.style.color = "white";
   document.body.append(error)
 }
+
+const readFileDataAsBase64 = (image) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = () => reject(new Error("Could not load image content"))
+    reader.readAsDataURL(image)
+  })
+
+
+// TODO: Fix image size, refactore home page service and clean up data

@@ -14,7 +14,7 @@ class AdminService {
                 
         $query->bindParam(':name', $name);
 
-        return executeQuery($query, "get");
+        return executeQuery($query, "get", "Error retrieving dish");
         
     }
     public function deleteDish($table, $name) {
@@ -23,7 +23,7 @@ class AdminService {
             
         $query->bindParam(':name', $name);
 
-        return executeQuery($query, "delete");
+        return executeQuery($query, "delete", "Error deleting dish");
 
     }
 
@@ -33,7 +33,7 @@ class AdminService {
            
         $this->replaceParams($data, $query);
       
-        return executeQuery($query);
+        return executeQuery($query, "post", "Error creating dish");
     }
 
     public function updateDish($changes) {
@@ -41,7 +41,7 @@ class AdminService {
         $query = $this->connection->prepare($this->prepareData($changes, "Update"));
         $this->replaceParams($changes, $query);
 
-        return executeQuery($query, "update");
+        return executeQuery($query, "update", "Error updating dish");
     }
 
     private function prepareData($changes, $method) {

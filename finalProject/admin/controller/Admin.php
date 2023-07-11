@@ -15,8 +15,7 @@ class Admin {
         $json = json_decode($data, true);
 
         switch($json['action']) {
-            case "create":                 
-                
+            case "create":                                 
                 $answer = $this->service->createDish($json);
                 break;                
                 
@@ -24,14 +23,9 @@ class Admin {
                 $table = $json["table"];
                 $name = $json["name"];
                 $answer =  $this->service->getDish($table, $name);
-
-                if ($answer[0]['image'] != null) {
-                    $answer[0]['image'] = base64_encode($answer[0]['image']);
-                }
                 break;
 
             case "update":
-
                 $answer =  $this->service->updateDish($json);
                 break;
 

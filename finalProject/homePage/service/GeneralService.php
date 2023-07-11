@@ -13,9 +13,9 @@ class GeneralService implements IService {
         $this->connection = DbConnection::getInstance()->getConnection();  
 
         $query = $this->connection->prepare(
-        "SELECT * FROM starters WHERE price < :priceStarter
-        UNION SELECT * FROM main_courses WHERE price < :priceMainCourse
-        UNION SELECT * FROM desserts WHERE price < :priceDesser;");
+        "SELECT name, description, price FROM starters WHERE price < :priceStarter
+        UNION SELECT name, description, price FROM main_courses WHERE price < :priceMainCourse
+        UNION SELECT name, description, price FROM desserts WHERE price < :priceDesser;");
 
         $query->bindParam(':priceStarter', $price);
         $query->bindParam(':priceMainCourse', $price);
@@ -36,9 +36,9 @@ class GeneralService implements IService {
         $this->connection = DbConnection::getInstance()->getConnection();  
 
         $query = $this->connection->prepare(
-        "SELECT * FROM starters WHERE price < :priceStarter AND vegetarian = 1
-        UNION SELECT * FROM main_courses WHERE price < :priceMainCourse AND vegetarian = 1
-        UNION SELECT * FROM desserts WHERE price < :priceDesser AND vegetarian = 1;");
+        "SELECT name, description, price FROM starters WHERE price < :priceStarter AND vegetarian = 1
+        UNION SELECT name, description, price FROM main_courses WHERE price < :priceMainCourse AND vegetarian = 1
+        UNION SELECT name, description, price FROM desserts WHERE price < :priceDesser AND vegetarian = 1;");
 
         $query->bindParam(':priceStarter', $price);
         $query->bindParam(':priceMainCourse', $price);
@@ -61,9 +61,9 @@ class GeneralService implements IService {
         $this->connection = DbConnection::getInstance()->getConnection();  
 
         $query = $this->connection->prepare(
-        "SELECT * FROM starters WHERE vegetarian = 1
-        UNION SELECT * FROM main_courses WHERE vegetarian = 1
-        UNION SELECT * FROM desserts WHERE vegetarian = 1;");
+        "SELECT name, description, price FROM starters WHERE vegetarian = 1
+        UNION SELECT name, description, price FROM main_courses WHERE vegetarian = 1
+        UNION SELECT name, description, price FROM desserts WHERE vegetarian = 1;");
         $query->execute();
 
         $queryAnswer = $query->fetchAll(PDO::FETCH_ASSOC);        
@@ -82,9 +82,9 @@ class GeneralService implements IService {
         $this->connection = DbConnection::getInstance()->getConnection();  
 
         $query = $this->connection->prepare(
-        "SELECT * FROM starters
-        UNION SELECT * FROM main_courses
-        UNION SELECT * FROM desserts;");
+        "SELECT name, description, price FROM starters
+        UNION SELECT name, description, price FROM main_courses
+        UNION SELECT name, description, price FROM desserts;");
 
         $query->execute();
 

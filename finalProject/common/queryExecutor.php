@@ -1,6 +1,6 @@
 <?php
 
-function executeQuery($query, $method = "post", $error = "No se ha encontrado el plato en la tabla seleccionada.") {
+function executeQuery($query, $method, $error) {
     try {    
 
         $queryAnswer = $query->execute();
