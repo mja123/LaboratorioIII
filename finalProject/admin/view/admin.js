@@ -37,7 +37,8 @@ createEvent.addEventListener("click", async (event) => {
         body: JSON.stringify(input),
       }
     );
-    let body = await request.json();
+    let bodyText = await request.text()
+    let body = await JSON.parse(bodyText)
     console.log(body);
     if (body["error"] != undefined) {
       throw new Error(body["error"]);
@@ -51,7 +52,7 @@ createEvent.addEventListener("click", async (event) => {
 
         errorAnswer.setAttribute("id", "errorRequest");
         errorAnswer.setAttribute("class", "d-flex justify-content-center form");
-        errorAnswer.innerHTML = e;
+        errorAnswer.innerHTML = "Error en la creación del plato! Por favor, revise los datos ingresados.";
         errorAnswer.style.color = "white";
         document.body.append(errorAnswer);
       }
@@ -78,11 +79,11 @@ readEvent.addEventListener("click", async (event) => {
         }
       );
       console.log(request)
-      let body = await request.json();
+      let bodyText = await request.text()
+      let body = await JSON.parse(bodyText)
       if (body["error"] != undefined) {
         throw new Error(body["error"]);
       }
-      console.log("REad method ")
       showDish(body);
     } catch (e) {
       if (!document.body.contains(document.getElementById("errorRequest"))) {
@@ -90,6 +91,7 @@ readEvent.addEventListener("click", async (event) => {
 
         errorAnswer.setAttribute("id", "errorRequest");
         errorAnswer.setAttribute("class", "d-flex justify-content-center form");
+        // errorAnswer.innerHTML = "Plato no encontrado.";
         errorAnswer.innerHTML = e;
         errorAnswer.style.color = "white";
         document.body.append(errorAnswer);
@@ -117,7 +119,8 @@ deleteEvent.addEventListener("click", async (event) => {
         }
       );
       console.log(request)
-      let body = await request.json();
+      let bodyText = await request.text()
+      let body = await JSON.parse(bodyText)
 
       if (body["error"] != undefined) {
         throw new Error(body["error"]);
@@ -130,7 +133,7 @@ deleteEvent.addEventListener("click", async (event) => {
 
         errorAnswer.setAttribute("id", "errorRequest");
         errorAnswer.setAttribute("class", "d-flex justify-content-center form");
-        errorAnswer.innerHTML = e;
+        errorAnswer.innerHTML = "Plato no encontrado.";
         errorAnswer.style.color = "white";
         document.body.append(errorAnswer);
       }
@@ -158,7 +161,8 @@ updateEvent.addEventListener("click", async (event) => {
       }
     );
     console.log(request)
-    let body = await request.json();
+    let bodyText = await request.text()
+    let body = await JSON.parse(bodyText)
     console.log(body);
     if (body["error"] != undefined) {
       throw new Error(body["error"]);
@@ -172,7 +176,7 @@ updateEvent.addEventListener("click", async (event) => {
 
         errorAnswer.setAttribute("id", "errorRequest");
         errorAnswer.setAttribute("class", "d-flex justify-content-center form");
-        errorAnswer.innerHTML = e;
+        errorAnswer.innerHTML = "Error al modificar el plato. Por favor, revise los dataos ingresados.";
         errorAnswer.style.color = "white";
         document.body.append(errorAnswer);
       }
@@ -205,7 +209,7 @@ const validateInput = async (action) => {
 
   switch (action) {
     case "create":
-      if (description.length == 0 || price.length == 0 || vegetarian.length == 0 || imageData.length == 0) {
+      if (description.length == 0 || price.length == 0 || vegetarian.length == 0 || imageData != undefined) {
         errorMessage("Debes ingresar todos los datos...")
         return null
       }
@@ -234,7 +238,7 @@ const validateInput = async (action) => {
         data.vegetarian = vegetarian
         changes++
       }
-      if (imageData.length > 0) {
+      if (imageData != undefined) {
         data.image = imageData
         changes++
       }
@@ -282,7 +286,6 @@ const showDish = (data) => {
     vegetarian.innerHTML = `No vegetariano`;
   }
 
-  image.src= data[0]["image"];
   // image.setAttribute("width", 50)
   // image.setAttribute("height", 100)
 
@@ -295,35 +298,20 @@ const showDish = (data) => {
   description.setAttribute("class", "col");
   price.setAttribute("class", "col");
   vegetarian.setAttribute("class", "col");
-  image.setAttribute("class", "img-fluid");
+  
 
   section.appendChild(name);
   section.appendChild(description);
   section.appendChild(price);
   section.appendChild(vegetarian);
-  section.appendChild(image)
+
+  if (image != undefined) {
+    image.src= data[0]["image"];
+    image.setAttribute("class", "img-fluid");
+    section.appendChild(image)
+  }
 };
 
-const readImage = (file) => {
-  
-  const reader = new FileReader();
-  file = atob(file);
-  reader.addEventListener(
-    "load",
-    () => {
-      // convert image file to base64 string
-      preview.src = reader.result;
-    },
-    false
-  );
-
-  console.log("here")
-  if (file) {
-    console.log(reader.readAsDataURL(file))
-    reader.readAsDataURL(file);
-  }
-  
-}
 
 const removeMessages = () => {
 
@@ -346,7 +334,7 @@ const removeMessages = () => {
 
 const validateVegetarian = (value) => {
   value = value.toLowerCase();
-
+  console.log("Vegetaiano: " + value);
   if (value == "1" || value == "true" || value == "yes" || value == "si") {
     return "1"
   } else if (value == "0" || value == "false"  || value == "no") {

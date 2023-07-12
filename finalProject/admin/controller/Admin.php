@@ -36,6 +36,14 @@ class Admin {
                 $answer =  $this->service->deleteDish($table, $name);
                 break;
         }
+        header('Content-type: application/json');
+        header('Access-Control-Allow-Origin: *'); 
+  
+        if (array_key_exists("error", $answer)) {
+            header('HTTP/1.1 400');
+        } else {
+            header('HTTP/1.1 200');
+        }
         echo json_encode($answer);
     }
 }
