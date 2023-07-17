@@ -3,7 +3,7 @@ require_once("./../DbConnection.php");
 
 class Login {
     public function compareData() {
-
+        
         $data = file_get_contents('php://input', true);
         $json = json_decode($data, true);
         
@@ -11,10 +11,13 @@ class Login {
         $password = $json["password"];
         
         $connection = DbConnection::getInstance()->getConnection();  
-         
+        
+        $encodedUsename = base64_encode($userName);
+        $encodedPassword = base64_encode($password);
+
         $query = $connection->prepare("SELECT name, password FROM admins WHERE name = :name AND password = :password;");
-        $query->bindParam(":name", $userName);
-        $query->bindParam(":password", $password);
+        $query->bindParam(":name", $encodedUsename);
+        $query->bindParam(":password", $encodedPassword);
     
     
         $query->execute();

@@ -91,8 +91,7 @@ readEvent.addEventListener("click", async (event) => {
 
         errorAnswer.setAttribute("id", "errorRequest");
         errorAnswer.setAttribute("class", "d-flex justify-content-center form");
-        // errorAnswer.innerHTML = "Plato no encontrado.";
-        errorAnswer.innerHTML = e;
+        errorAnswer.innerHTML = "Plato no encontrado.";
         errorAnswer.style.color = "white";
         document.body.append(errorAnswer);
       }
@@ -176,7 +175,7 @@ updateEvent.addEventListener("click", async (event) => {
 
         errorAnswer.setAttribute("id", "errorRequest");
         errorAnswer.setAttribute("class", "d-flex justify-content-center form");
-        errorAnswer.innerHTML = "Error al modificar el plato. Por favor, revise los dataos ingresados.";
+        errorAnswer.innerHTML = "Error al modificar el plato. Por favor, revise los datos ingresados.";
         errorAnswer.style.color = "white";
         document.body.append(errorAnswer);
       }
@@ -193,7 +192,7 @@ const validateInput = async (action) => {
   let image = document.getElementById("image").files[0]
   let imageData
   if (image != undefined) {
-    imageData = await readFileDataAsBase64(image);
+   imageData = await readFileDataAsBase64(image); 
   }
 
   console.log("Image: " + imageData)
@@ -273,7 +272,7 @@ const showDish = (data) => {
   let vegetarian = document.createElement("p");
   let image = document.createElement("img");
 
-  section.setAttribute("class", "container");
+  section.setAttribute("class", "container-fluid");
   section.setAttribute("id", "getMessage")
   wrapper.append(section);
 
@@ -285,9 +284,6 @@ const showDish = (data) => {
   } else {
     vegetarian.innerHTML = `No vegetariano`;
   }
-
-  // image.setAttribute("width", 50)
-  // image.setAttribute("height", 100)
 
   name.style.color = "white"; 
   description.style.color = "white"; 
@@ -307,8 +303,9 @@ const showDish = (data) => {
 
   if (image != undefined) {
     image.src= data[0]["image"];
+    image.setAttribute("id", "image");
     image.setAttribute("class", "img-fluid");
-    section.appendChild(image)
+    section.appendChild(image);
   }
 };
 
