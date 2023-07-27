@@ -18,7 +18,7 @@ header('Content-type: application/json');
 header('Access-Control-Allow-Origin: *');    
 
 if ($queryAnswer) {
-    header('HTTP/1.1 201');
+    header('HTTP/1.1 200');
     echo json_encode($queryAnswer);
 
 } else {

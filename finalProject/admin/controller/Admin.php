@@ -46,6 +46,10 @@ class Admin {
         }
         echo json_encode($answer);
     }
+
+    private function validateImageExtension($image) {
+        
+    }
 }
 
 $admin = new Admin();

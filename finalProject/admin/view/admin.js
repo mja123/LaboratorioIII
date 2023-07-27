@@ -58,12 +58,14 @@ createEvent.addEventListener("click", async (event) => {
       }
     }
   }
+  clearData()
 });
 
 const readEvent = document.getElementById("readButton");
 readEvent.addEventListener("click", async (event) => {
   event.preventDefault();
 
+  
   removeMessages();
 
   let input = await validateInput("read");
@@ -97,6 +99,7 @@ readEvent.addEventListener("click", async (event) => {
       }
     }
   }
+  clearData()
 });
 
 const deleteEvent = document.getElementById("deleteButton");
@@ -138,6 +141,7 @@ deleteEvent.addEventListener("click", async (event) => {
       }
     }
   }
+  clearData()
 });
 
 const updateEvent = document.getElementById("updateButton");
@@ -181,6 +185,7 @@ updateEvent.addEventListener("click", async (event) => {
       }
     }
   }
+  clearData()
 });
 
 const validateInput = async (action) => {
@@ -191,7 +196,12 @@ const validateInput = async (action) => {
   let price = document.getElementById("price").value;
   let image = document.getElementById("image").files[0]
   let imageData
+
   if (image != undefined) {
+    if (!validateFileType(document.getElementById("image").value)) {
+      errorMessage("Extensión no permitida")
+      return null
+    }
    imageData = await readFileDataAsBase64(image); 
   }
 
@@ -204,20 +214,23 @@ const validateInput = async (action) => {
 
   let data = {}
   data.name = name
-  data.table = table
+  data.table = table.toLowerCase()
 
   switch (action) {
     case "create":
-      if (description.length == 0 || price.length == 0 || vegetarian.length == 0 || imageData != undefined) {
+      if (description.length == 0 || price.length == 0 || vegetarian.length == 0 || imageData == undefined) {
         errorMessage("Debes ingresar todos los datos...")
         return null
       }
       data.description = description
       data.price = price
-      if (validateVegetarian(vegetarian) == null) {
+
+      const vegetarianValidation = validateVegetarian(vegetarian)
+      if (vegetarianValidation == null) {
+        console.log("vegetarian ", vegetarian.length)
         return null
-      }
-      data.vegetarian = vegetarian
+      } 
+      data.vegetarian = vegetarianValidation
       data.image = imageData
       break
     case "update":
@@ -231,10 +244,13 @@ const validateInput = async (action) => {
         changes++
       }
       if (vegetarian.length > 0) {
-        if (validateVegetarian(vegetarian) == null) {
+        console.log("vegetarian ", vegetarian.length)
+        const vegetarianValidation = validateVegetarian(vegetarian)
+        if (vegetarianValidation == null) {
+          console.log("vegetarian ", vegetarian.length)
           return null
         } 
-        data.vegetarian = vegetarian
+        data.vegetarian = vegetarianValidation
         changes++
       }
       if (imageData != undefined) {
@@ -247,6 +263,7 @@ const validateInput = async (action) => {
       }
       break
   }
+  clearData()
   console.log(data)
   return data
 }
@@ -337,7 +354,7 @@ const validateVegetarian = (value) => {
   } else if (value == "0" || value == "false"  || value == "no") {
     return "0"
   } else {
-    errorMessage("Debes ingresar 1 o 0.")
+    errorMessage("Debes ingresar si es vegetariano o no.")
     return null
   }
 }
@@ -359,5 +376,17 @@ const readFileDataAsBase64 = (image) =>
     reader.readAsDataURL(image)
   })
 
+const clearData = () => {
+  document.getElementById("name").value = "";
+  document.getElementById("table").value = "";
+  document.getElementById("description").value = "" 
+  document.getElementById("vegetarian").value = "" 
+  document.getElementById("price").value = "";
+  document.getElementById("image").value = ""
+}
 
-// TODO: Fix image size, refactore home page service and clean up data
+const validateFileType = (file) => {
+  const fileSplitted = file.split(".")
+  const extension = fileSplitted[fileSplitted.length - 1]
+  return extension === "jpg" || extension === "jpeg" || extension === "png"
+}
