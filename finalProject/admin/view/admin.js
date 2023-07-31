@@ -205,7 +205,7 @@ const validateInput = async (action) => {
    imageData = await readFileDataAsBase64(image); 
   }
 
-  console.log("Image: " + imageData)
+  console.log(imageData)
   
   if (name.length == 0 || table.length == 0) {
     errorMessage("Debes ingresar nombre y tabla.")

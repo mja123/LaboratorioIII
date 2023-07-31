@@ -44,11 +44,11 @@ $answer = null;
 
 try {
     $answer = $login->compareData();
-    // header('HTTP/1.1 200');
+    header('HTTP/1.1 200');
     
 } catch(Exception $e) {
     $answer = array('error' => $e->getMessage());
-    // header('HTTP/1.1 404');
+    header('HTTP/1.1 400');
     
 } finally {
     header('Content-type: application/json');

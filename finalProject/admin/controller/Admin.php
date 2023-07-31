@@ -16,7 +16,11 @@ class Admin {
 
         switch($json['action']) {
             case "create":                                 
-                $answer = $this->service->createDish($json);
+                if ($this->imageValidator($json["image"])) {
+                    $answer = $this->service->createDish($json);
+                } else {
+                    $answer = array("error" => "Forbiden image");
+                }
                 break;                
                 
             case "read":
@@ -26,7 +30,11 @@ class Admin {
                 break;
 
             case "update":
-                $answer =  $this->service->updateDish($json);
+                if ($this->imageValidator($json["image"])) {
+                    $answer = $this->service->updateDish($json);
+                } else {
+                    $answer = array("error" => "Forbiden image");
+                }
                 break;
 
             default:
@@ -47,8 +55,26 @@ class Admin {
         echo json_encode($answer);
     }
 
-    private function validateImageExtension($image) {
-        
+    private function imageValidator(&$image): bool {
+        return $this->validateImageExtension($image) && $this->validateImageSize($image);
+    }
+
+    private function validateImageExtension($image): bool {
+        $extension = explode('/', explode(';', $image)[0])[1];
+        switch ($extension) {
+            case "jpg":
+                break;
+            case "jpeg":
+                break;
+            case "png":
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+    private function validateImageSize($image): bool {
+        return strlen($image) <= 1024 * 200;
     }
 }
 

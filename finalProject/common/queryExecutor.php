@@ -7,7 +7,7 @@ function executeQuery($query, $method, $error) {
 
         header('Content-type: application/json');
         header('Access-Control-Allow-Origin: *'); 
-        
+
         switch($method) {
             case "get":
                 $queryAnswer = $query->fetchAll(PDO::FETCH_ASSOC);           
@@ -16,13 +16,13 @@ function executeQuery($query, $method, $error) {
                 }
                 break;
             case "delete":
-                if ($query->rowCount() > 0) {
+                if ($queryAnswer > 0) {
                     header('HTTP/1.1 200');
                     return array("success", true);
                 }
                 break;
             case "update":
-                if ($query->rowCount() > 0) {
+                if ($queryAnswer > 0) {
                     header('HTTP/1.1 200');
                     return array("success", true);
                 }
@@ -30,7 +30,7 @@ function executeQuery($query, $method, $error) {
             
             default:
                 if ($queryAnswer) {
-                    header('HTTP/1.1 200');
+                    header('HTTP/1.1 201');
                     return array("success", true);
                 }
         }
