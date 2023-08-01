@@ -12,6 +12,7 @@ function executeQuery($query, $method, $error) {
             case "get":
                 $queryAnswer = $query->fetchAll(PDO::FETCH_ASSOC);           
                 if ($queryAnswer) {
+                    header('HTTP/1.1 200');
                     return $queryAnswer;
                 }
                 break;

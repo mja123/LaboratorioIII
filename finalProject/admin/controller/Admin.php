@@ -15,11 +15,22 @@ class Admin {
         $json = json_decode($data, true);
 
         switch($json['action']) {
-            case "create":                                 
-                if ($this->imageValidator($json["image"])) {
+            case "create";
+            case "update":                           
+                if (isset($json["image"]) && !$this->imageValidator($json["image"])) {
+                    $answer = array("error" => "Forbiden image");
+                    break;
+                }
+
+                $price = (int) $json["price"];
+                if ($price < 100 || $price > 10000) {
+                    $answer = array("error" => "Invalid price");
+                    break;
+                }
+                if ($json["action"] == "create") {
                     $answer = $this->service->createDish($json);
                 } else {
-                    $answer = array("error" => "Forbiden image");
+                    $answer = $this->service->updateDish($json);
                 }
                 break;                
                 
@@ -29,16 +40,7 @@ class Admin {
                 $answer =  $this->service->getDish($table, $name);
                 break;
 
-            case "update":
-                if ($this->imageValidator($json["image"])) {
-                    $answer = $this->service->updateDish($json);
-                } else {
-                    $answer = array("error" => "Forbiden image");
-                }
-                break;
-
             default:
-
                 $table = $json["table"];
                 $name = $json["name"];
                 $answer =  $this->service->deleteDish($table, $name);
