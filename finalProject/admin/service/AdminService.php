@@ -1,122 +1,116 @@
 <?php
-require_once("DbConnection.php");
-
+require_once("./../../DbConnection.php");
+require_once("./../../common/queryExecutor.php");
 class AdminService {
     private $connection;
 
     function __construct() {
+        $this->connection = DbConnection::getInstance()->getConnection();
     }
 
     public function getDish($table, $name) {
-        $this->connection = DbConnection::getInstance()->getConnection();
-
-        try {
-            switch($table) {
-                case "desserts":
-                    $query = $this->connection->prepare("SELECT * FROM `desserts` WHERE `name`=:dish;");
-                    break;
-                case "main_courses":
-                    $query = $this->connection->prepare("SELECT * FROM `main_courses` WHERE `name`=:dish;");
-                    break;
-                case "starters":
-                    $query = $this->connection->prepare("SELECT * FROM `starters` WHERE `name`=:dish;");
-                    break;
-                default:
-                    throw new Exception("No se ha encontrado la tabla seleccionada.");
-            }
-    
-            
-            $query->bindParam(':dish', $name);
-    
-            $query->execute();
-            
-            $queryAnswer = $query->fetchAll(PDO::FETCH_ASSOC);        
+        
+        $query = $this->connection->prepare("SELECT * FROM $table WHERE `name` = :name;");
                 
-            if ($queryAnswer) {
-            
-                return $queryAnswer;
-            
-            }
+        $query->bindParam(':name', $name);
 
-            throw new Exception("No se ha encontrado el plato.");
-            
-        } catch(Exception $e) {
-    
-            return array("error" => $e->getMessage());            
-        }
+        return executeQuery($query, "get", "Error retrieving dish");
         
     }
     public function deleteDish($table, $name) {
-        $this->connection = DbConnection::getInstance()->getConnection();
-        
-        try {
 
-            switch($table) {
-                case "desserts":
-                    $query = $this->connection->prepare("DELETE FROM `desserts` WHERE `name`=:dish;");
-                    break;
-                case "main_courses":
-                    $query = $this->connection->prepare("DELETE FROM `main_courses` WHERE `name`=:dish;");
-                    break;
-                case "starters":
-                    $query = $this->connection->prepare("DELETE FROM `starters` WHERE `name`=:dish;");
-                    break;
-                default:
-                    throw new Exception("No se ha encontrado la tabla seleccionada.");
-            }
-        
-            $query->bindParam(':dish', $name);
-   
-            $query->execute();
-
-            if ($query->rowCount() > 0) {
-
-                return array("success", true);
-            }
+        $query = $this->connection->prepare("DELETE FROM $table WHERE `name` = :name;");
             
-            throw new Exception("No se ha encontrado el plato en la tabla seleccionada.");
-            
-        } catch(Exception $e) {
-            return array("error" => $e->getMessage());
-        }
+        $query->bindParam(':name', $name);
+
+        return executeQuery($query, "delete", "Error deleting dish");
+
     }
-    public function createDish($table, $name, $price, $description, $vegetarian) {
-        $this->connection = DbConnection::getInstance()->getConnection();
 
+    public function createDish($data) {        
         
-        try {
+        $query = $this->connection->prepare($this->prepareData($data, "Create"));   
+           
+        $this->replaceParams($data, $query);
+      
+        return executeQuery($query, "post", "Error creating dish");
+    }
+
+    public function updateDish($changes) {
+
+        $query = $this->connection->prepare($this->prepareData($changes, "Update"));
+        $this->replaceParams($changes, $query);
+
+        return executeQuery($query, "update", "Error updating dish");
+    }
+
+    private function prepareData($changes, $method) {
+
+        $columns = "";
+        $placeholder = "";
+        $table = $changes["table"];
+        $updates = "";
+        
+        foreach ($changes as $key => $value) {
+            if ($key == "table" || $key == "action") {
+                continue;
+            }
+
+            if ($method == "Update") {
+                if ($key == "name") {
+                    continue;
+                }
+                $updates = $updates . $key . " = " . ":" . $key . ", ";
+            } else {
+                $columns = $columns . $key . ', ';
+                $placeholder = $placeholder . ":" . $key . ', ';  
+            }
+        }        
+
+        if ($method == "Update") {
+            $name = $changes["name"];            
+            $updates = trim(substr_replace($updates, '', -2, -1));
             
-            switch($table) {
-                case "desserts":
-                    $query = $this->connection->prepare("INSERT INTO `desserts` (`name`, `price`, `description`, `vegetarian`) VALUES (:dish, :price, :dishDescription, :vegetarian);");
+            return "UPDATE $table SET $updates WHERE `name` = :name;";
+        }      
+
+        $columns = trim(substr_replace($columns, '' , -2, -1));
+        $placeholder = trim(substr_replace($placeholder, '' , -2, -1));
+        
+        return "INSERT INTO $table ($columns) VALUES ($placeholder)";
+    }
+
+    private function replaceParams($changes, &$query) {
+        foreach ($changes as $key => $value) {          
+            switch($key) {
+                case "action":
                     break;
-                case "main_courses":
-                    $query = $this->connection->prepare("INSERT INTO `main_courses` (`name`, `price`, `description`, `vegetarian`) VALUES (:dish, :price, :dishDescription, :vegetarian);");
+                case "table":
                     break;
-                case "starters":
-                    $query = $this->connection->prepare("INSERT INTO `starters` (`name`, `price`, `description`, `vegetarian`) VALUES (:dish, :price, :dishDescription, :vegetarian);");
+                case "price":
+                    $price = intval($value);
+                    $query->bindParam(":$key", $price, PDO::PARAM_INT);
+                    break;
+                case "vegetarian":
+                    $vegetarian = 0;
+                    if ($value == "1") {
+                        $vegetarian = 1;
+                    } 
+                    $query->bindParam(":$key", $vegetarian, PDO::PARAM_BOOL);
+                    break;
+                case "name":  
+                    $name = $value;
+                    $query->bindParam(":$key", $name);  
+                    break;
+                case "image":
+                    $image = $value;
+                    $query->bindParam(":$key", $image, PDO::PARAM_LOB);  
                     break;
                 default:
-                    throw new Exception("No se ha encontrado la tabla seleccionada.");
+                    $description = $value;
+                    $query->bindParam(":$key", $description);
+                    break;
             }
-            
-            
-            $query->bindParam(":dish", $name);
-            $query->bindParam(":price", $price, PDO::PARAM_INT);
-            $query->bindParam(":dishDescription", $description);
-            $query->bindParam(":vegetarian", $vegetarian);
-            
-   
-            $queryAnswer = $query->execute();
-            
-            if ($queryAnswer) {
-
-                return array("success", true);
-            }
-            
-            throw new Exception("No se ha encontrado el plato en la tabla seleccionada.");
-        } catch(Exception $e) {
-            return array("error" => $e->getMessage());
         }
     }
 }

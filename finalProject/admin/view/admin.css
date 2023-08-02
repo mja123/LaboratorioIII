@@ -23,3 +23,12 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none; 
   margin: 0; 
 }
+
+input[type="file"]::-webkit-file-upload-button {
+    margin-left: -2px;    
+    display: none;
+}
+
+input[type="file"]::file-selector-button {
+    display: none;
+}

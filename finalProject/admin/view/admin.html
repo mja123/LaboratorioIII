@@ -40,9 +40,8 @@
 
     <!-- /Header -->
     <section class="d-flex justify-content-center form" id="wrapper">
-      <form method="POST">
+      <form method="POST" enctype="multipart/form-data">
         <br />
-
         <input
           type="text"
           class="form-control"
@@ -83,12 +82,19 @@
           placeholder="¿Vegetariano? (crear)"
         /> <br>
 
-
+        <div class="input-group mb-3">
+          <input type="file" class="form-control" id="image" accept="image/png, image/jpeg, image/jpg " placeholder="Agregar imágen (crear)">
+          <label class="input-group-text" for="image">Imágen</label>
+        </div>
+        
         <button type="button" id="createButton" class="btn btn-primary btn-lg">
           Crear
         </button>
         <button type="button" id="readButton" class="btn btn-primary btn-lg">
           Leer
+        </button>
+        <button type="button" id="updateButton" class="btn btn-primary btn-lg">
+          Modificar
         </button>
         <button type="button" id="deleteButton" class="btn btn-primary btn-lg">
           Eliminiar

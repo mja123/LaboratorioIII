@@ -1,7 +1,7 @@
 <?php
-require_once("homePage/service/interfaces/IService.php");
-require_once("DbConnection.php");
-require_once("exceptions/ProductsNotFound.php");
+require_once(dirname(__FILE__)."/interfaces/IService.php");
+require_once("./../../DbConnection.php");
+require_once("./../../exceptions/ProductsNotFound.php");
 
 class StarterService implements IService {
     private $connection;
@@ -12,7 +12,7 @@ class StarterService implements IService {
     public function getFoodByPrice($price) {
         $this->connection = DbConnection::getInstance()->getConnection();  
 
-        $query = $this->connection->prepare("SELECT * FROM starters WHERE price < :price;");
+        $query = $this->connection->prepare("SELECT name, description, price FROM starters WHERE price < :price;");
         $query->bindParam(':price', $price);
         $query->execute();
 
@@ -31,7 +31,7 @@ class StarterService implements IService {
     public function getVegetarianFoodByPrice($price) {
         $this->connection = DbConnection::getInstance()->getConnection();  
 
-        $query = $this->connection->prepare("SELECT * FROM starters WHERE price < :price AND vegetarian = 1;");
+        $query = $this->connection->prepare("SELECT name, description, price FROM starters WHERE price < :price AND vegetarian = 1;");
         $query->bindParam(':price', $price);
         $query->execute();
 
@@ -49,14 +49,14 @@ class StarterService implements IService {
     public function getVegetarianFood() {
         $this->connection = DbConnection::getInstance()->getConnection();  
 
-        $query = $this->connection->prepare("SELECT * FROM starters WHERE vegetarian = 1;");
+        $query = $this->connection->prepare("SELECT name, description, price FROM starters WHERE vegetarian = 1;");
         $query->execute();
 
         $queryAnswer = $query->fetchAll(PDO::FETCH_ASSOC);        
 
 
         if ($queryAnswer) {
-
+            
             return json_encode($queryAnswer);
         
         } else {
@@ -67,14 +67,14 @@ class StarterService implements IService {
     public function getAllByType() {
         $this->connection = DbConnection::getInstance()->getConnection();  
 
-        $query = $this->connection->prepare("SELECT * FROM starters;");
+        $query = $this->connection->prepare("SELECT name, description, price FROM starters;");
         $query->execute();
 
         $queryAnswer = $query->fetchAll(PDO::FETCH_ASSOC);        
 
 
         if ($queryAnswer) {
-
+            
             return json_encode($queryAnswer);
         
         } else {
@@ -82,4 +82,8 @@ class StarterService implements IService {
         }
     }
 }
+
+$starter = new StarterService();
+$starter->getVegetarianFood();
+
 ?>

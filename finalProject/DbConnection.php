@@ -14,7 +14,7 @@ class DbConnection {
         ); 
 
         try{
-            $this->connection = new PDO(getenv("URL"), getenv("USERNAME"), getenv("PASSWORD"), $this->options);         
+            $this->connection = new PDO(getenv("URL"), getenv("USER"), getenv("PASSWORD"), $this->options);         
         } catch(PDOException $e) {
             echo "Problemas al conectar la base de datos: $e"; 
         }
