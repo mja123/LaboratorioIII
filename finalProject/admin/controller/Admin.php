@@ -22,11 +22,14 @@ class Admin {
                     break;
                 }
 
-                $price = (int) $json["price"];
-                if ($price < 100 || $price > 10000) {
-                    $answer = array("error" => "Invalid price");
-                    break;
+                if (isset($json["price"])) {
+                    $price = (int) $json["price"];
+                    if ($price < 100 || $price > 10000) {
+                        $answer = array("error" => "Invalid price");
+                        break;
+                    }    
                 }
+                
                 if ($json["action"] == "create") {
                     $answer = $this->service->createDish($json);
                 } else {
